@@ -7,7 +7,7 @@ SOURCES := $(wildcard *.cpp)
 
 all : a
 	
-a : $SOURCES
+a : $(SOURCES)
 	$(LD) $^ $(LDFLAGS) -o $@
 
 %.o : %.cpp
