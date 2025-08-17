@@ -134,7 +134,7 @@ int main(void)
 
 
 
-    int result_code = solve_square_equation(&coeff, roots);
+    enum solution_result_codes result_code = solve_square_equation(&coeff, roots);
     
     if (result_code == RESULT_INFINITE_SOLUTIONS)
     {
