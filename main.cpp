@@ -47,8 +47,12 @@ struct coefficients_t_reflection_table_t
 };
 
 
-
-
+void generate_reflection_structure(struct coefficients_t *coeff, struct coefficients_t_reflection_table_t *array)
+{
+    array[0] = (struct coefficients_t_reflection_table_t){.name = "c", .power = 0, .ptr = &coeff->c};
+    array[1] = (struct coefficients_t_reflection_table_t){.name = "b", .power = 1, .ptr = &coeff->b};
+    array[2] = (struct coefficients_t_reflection_table_t){.name = "a", .power = 2, .ptr = &coeff->a};
+}
 
 
 
@@ -112,7 +116,7 @@ int main(void)
     struct coefficients_t coeff = {};
     double roots[EQUATION_POWER] = {};
 
-    result_code = read_coefficients_offsets(&coeff);
+    result_code = read_coefficients_struct(&coeff);
     if (result_code != 0)
     {
         fprintf(stderr, "read_coefficients failed with code %d.\n", result_code);
@@ -212,11 +216,10 @@ int read_coefficients_struct(struct coefficients_t *coeff)
 {
     int res = 0;
 
-    struct coefficients_t_reflection_table_t reflection_data[3] = {
-        {.name = "c", .power = 0, .ptr = &coeff->c},
-        {.name = "b", .power = 1, .ptr = &coeff->b},
-        {.name = "a", .power = 2, .ptr = &coeff->a},
-    };
+
+    struct coefficients_t_reflection_table_t reflection_data[sizeof(*coeff) / sizeof(double)] = {};
+    generate_reflection_structure(coeff, reflection_data);
+    
 
     for (int i = 0; i < (int)arraylength(reflection_data); ++i)
     {
