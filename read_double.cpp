@@ -31,12 +31,14 @@ int read_double(double *result, const char *fmt, ...)
         }
         if (scan_result == EOF)
         {
+            va_end(args);
             return READ_COEFFICIENTS_EOF;
         }
         do { ch = getchar(); } 
         while (ch != EOF && ch != '\n');
         if (ch == EOF)
         {
+            va_end(args);
             return READ_COEFFICIENTS_EOF;
         }
     }
