@@ -80,12 +80,16 @@ int read_coefficients(double *coefficients)
 
 int solve_square_equation(double *coeff, double *roots)
 {
-    if (fabs(coeff[2]) < EPSILON)
+    double a = coeff[2];
+    double b = coeff[1];
+    double c = coeff[0];
+    
+    if (fabs(a) < EPSILON)
     {
         return solve_linear_equation(coeff, roots);
     }
 
-    double d = coeff[1] * coeff[1] - 4.0 * coeff[0] * coeff[2];
+    double d = b * b - 4.0 * c * a;
 
     if (d < -EPSILON)
     {
@@ -94,26 +98,29 @@ int solve_square_equation(double *coeff, double *roots)
 
     if (d < EPSILON)
     {
-        roots[0] = -coeff[1] * 0.5 / coeff[2];
+        roots[0] = -b * 0.5 / a;
         return 1;
     }
 
     double sqrt_d = sqrt(d);
 
-    roots[0] = (-coeff[1] - sqrt_d) * 0.5 / coeff[2];
-    roots[1] = (-coeff[1] + sqrt_d) * 0.5 / coeff[2];
+    roots[0] = (-b - sqrt_d) * 0.5 / a;
+    roots[1] = (-b + sqrt_d) * 0.5 / a;
 
     return 2;
 }
 
 int solve_linear_equation(double *coeff, double *roots)
 {
-    if (fabs(coeff[1]) < EPSILON)
+    double a = coeff[2];
+    double b = coeff[1];
+        
+    if (fabs(a) < EPSILON)
     {
-        return (fabs(coeff[0]) < EPSILON ? -1 : 0);
+        return (fabs(b) < EPSILON ? -1 : 0);
     }
 
-    roots[0] = -coeff[0] / coeff[1];
+    roots[0] = -b / a;
     
     return 1;
 }
