@@ -23,7 +23,7 @@ int main(void)
         struct coefficients_t coeff = {};
         double roots[EQUATION_POWER] = {};
 
-        return_code = read_coefficients_struct(&coeff);
+        return_code = read_coefficients_union(&coeff);
         if (return_code == READ_COEFFICIENTS_EOF)
         {
             return 0;

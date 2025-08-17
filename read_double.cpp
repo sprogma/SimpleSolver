@@ -7,8 +7,6 @@
 #include "stdarg.h"
 
 
-const int READ_COEFFICIENTS_EOF = -1;
-
 
 
 int read_double(double *result, const char *fmt, ...)
