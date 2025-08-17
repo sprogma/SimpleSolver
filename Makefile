@@ -3,12 +3,14 @@ LD = g++
 
 CFLAGS += -Wall -Wpedantic
 
+SOURCES := $(wildcard *.cpp)
+
 all : a
 	
-a : main.o
-	$(LD) $^ $(LDFLAGS) -o $@ $(LDLIBS)
+a : $SOURCES
+	$(LD) $^ $(LDFLAGS) -o $@
 
-main.o : main.cpp
+%.o : %.cpp
 	$(CC) -c $< $(CFLAGS) -o $@
 
 clean:
