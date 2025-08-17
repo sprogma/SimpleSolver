@@ -47,15 +47,15 @@ function assert
     }
 }
 
-assert {Equal (1, 3, 2  | & $Appliction) -1, -0.5}
-assert {Equal (3, 2, 1  | & $Appliction) @()}
-assert {Equal (1, 2, 3  | & $Appliction) @()}
-assert {Equal (3, 1, -2 | & $Appliction) -1, 1.5}
-assert {Equal (3, 1, 0  | & $Appliction) -3}
-assert {Equal (1, -2, 1 | & $Appliction) 1}
-assert {Equal (0, 1, 0  | & $Appliction) 0}
-assert {Equal (1, 0, 0  | & $Appliction) @()}
-assert {Equal (1, 3, 2  | & $Appliction) -1, -0.5}
-assert {(0, 0, 0 | & $Appliction) -eq "inf"}
+assert {Equal (1, 3, 2  | & $Appliction | echo) -1, -0.5}
+assert {Equal (3, 2, 1  | & $Appliction | echo) @()}
+assert {Equal (1, 2, 3  | & $Appliction | echo) @()}
+assert {Equal (3, 1, -2 | & $Appliction | echo) -1, 1.5}
+assert {Equal (3, 1, 0  | & $Appliction | echo) -3}
+assert {Equal (1, -2, 1 | & $Appliction | echo) 1}
+assert {Equal (0, 1, 0  | & $Appliction | echo) 0}
+assert {Equal (1, 0, 0  | & $Appliction | echo) @()}
+assert {Equal (1, 3, 2  | & $Appliction | echo) -1, -0.5}
+assert {(0, 0, 0 | & $Appliction | echo) -eq "inf"}
 
 popd
