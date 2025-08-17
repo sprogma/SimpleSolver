@@ -11,6 +11,11 @@
 
 
 int read_coefficients(double *coefficients);
+
+/*  
+    functions return count of writed roots, and
+    will return -1 if there is infinite number of solutions.
+*/
 int solve_square_equation(double *coeff, double *roots);
 int solve_linear_equation(double *coeff, double *roots);
 
@@ -50,13 +55,6 @@ int main(void)
 }
 
 
-
-/*
-    Takes equation formula from user, allocates memory and return it into "coefficients". 
-    returns equation length in "coefficients_length"
-
-    if error occurs, *coefficients will be NULL (and return code != 0)
-*/
 int read_coefficients(double *coefficients)
 {
     int ch;
