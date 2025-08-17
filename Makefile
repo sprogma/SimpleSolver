@@ -8,7 +8,7 @@ all : a
 a : main.o
 	$(LD) $^ $(LDFLAGS) -o $@ $(LDLIBS)
 
-main.o : main.c
+main.o : main.cpp
 	$(CC) -c $< $(CFLAGS) -o $@
 
 clean:
