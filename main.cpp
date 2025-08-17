@@ -150,7 +150,7 @@ int main(void)
 
 
 
-int print_result(double *roots, int result_code)
+int print_result(double *roots, enum solution_result_codes result_code)
 {
     switch (result_code)
     {
