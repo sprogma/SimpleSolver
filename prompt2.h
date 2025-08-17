@@ -5,7 +5,7 @@
 #include "solver.h"
 
 
-extern const char * const coefficients_t_reflection_data[3];
+const char * const coefficients_t_reflection_data[3] = {"c", "b", "a"};
 
 
 union coefficients_converter_t

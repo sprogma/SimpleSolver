@@ -18,7 +18,11 @@ struct coefficients_t_global_reflection_table_line_t
 
 #define offset_of(type, field) ((uintptr_t)&(((type *)NULL)->field))
 
-extern const struct coefficients_t_global_reflection_table_line_t coefficients_t_reflection_table[];
+const struct coefficients_t_global_reflection_table_line_t coefficients_t_reflection_table[] = {
+    {.name = "c", .power = 0, .offset = offset_of(struct coefficients_t, c)},
+    {.name = "b", .power = 1, .offset = offset_of(struct coefficients_t, b)},
+    {.name = "a", .power = 2, .offset = offset_of(struct coefficients_t, a)},
+};
 
 /* or use more macroses:
 

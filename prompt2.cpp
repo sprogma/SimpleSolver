@@ -3,9 +3,6 @@
 #include "read_double.h"
 
 
-const char * const coefficients_t_reflection_data[3] = {"c", "b", "a"};
-
-
 int read_coefficients_union(struct coefficients_t *coeff)
 {
     int res;
