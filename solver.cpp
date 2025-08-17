@@ -4,21 +4,27 @@
 #include "math.h"
 
 
+#define F_COMPARE_LT(a, b) ((a) < (b) - EPSILON)
+#define F_COMPARE_LE(a, b) ((a) < (b) + EPSILON)
+#define F_COMPARE_EQ(a, b) (fabs((a) - (b)) < EPSILON)
+
+
+
 enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots)
 {
-    if (fabs(coeff->a) < EPSILON)
+    if (F_COMPARE_EQ(coeff->a, 0.0))
     {
         return solve_linear_equation(coeff, roots);
     }
 
     double d = coeff->b * coeff->b - 4.0 * coeff->a * coeff->c;
 
-    if (d < -EPSILON)
+    if (F_COMPARE_LT(d, 0.0))
     {
         return RESULT_0_SOLUTIONS;
     }
 
-    if (d < EPSILON)
+    if (F_COMPARE_LE(d, 0.0))
     {
         roots[0] = -coeff->b * 0.5 / coeff->a;
         return RESULT_1_SOLUTIONS;
@@ -35,9 +41,9 @@ enum solution_result_codes solve_square_equation(const struct coefficients_t *co
 
 enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots)
 {        
-    if (fabs(coeff->b) < EPSILON)
+    if (F_COMPARE_EQ(coeff->b, 0.0))
     {
-        return (fabs(coeff->c) < EPSILON ? RESULT_INFINITE_SOLUTIONS : RESULT_0_SOLUTIONS);
+        return (F_COMPARE_EQ(coeff->c, 0.0) ? RESULT_INFINITE_SOLUTIONS : RESULT_0_SOLUTIONS);
     }
 
     roots[0] = -coeff->c / coeff->b;
