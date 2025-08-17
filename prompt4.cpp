@@ -1,6 +1,7 @@
 #include "common.h"
 #include "prompt4.h"
 #include "read_double.h"
+#include "stddef.h"
 
 
 const struct coefficients_t_global_reflection_table_line_t coefficients_t_reflection_table[] = {
