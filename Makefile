@@ -4,10 +4,11 @@ LD = g++
 CFLAGS += -Wall -Wpedantic
 
 SOURCES := $(wildcard *.cpp)
+OBJS := $(SOURCES:.cpp=.o)
 
 all : a
-	
-a : $(SOURCES)
+
+a : $(OBJS)
 	$(LD) $^ $(LDFLAGS) -o $@
 
 %.o : %.cpp
