@@ -16,8 +16,8 @@ int read_coefficients(double *coefficients);
     functions return count of writed roots, and
     will return -1 if there is infinite number of solutions.
 */
-int solve_square_equation(double *coeff, double *roots);
-int solve_linear_equation(double *coeff, double *roots);
+int solve_square_equation(const double *coeff, double *roots);
+int solve_linear_equation(const double *coeff, double *roots);
 
 
 int main(void)
@@ -78,7 +78,7 @@ int read_coefficients(double *coefficients)
 }
 
 
-int solve_square_equation(double *coeff, double *roots)
+int solve_square_equation(const double *coeff, double *roots)
 {
     double a = coeff[2];
     double b = coeff[1];
@@ -110,7 +110,7 @@ int solve_square_equation(double *coeff, double *roots)
     return 2;
 }
 
-int solve_linear_equation(double *coeff, double *roots)
+int solve_linear_equation(const double *coeff, double *roots)
 {
     double a = coeff[2];
     double b = coeff[1];
