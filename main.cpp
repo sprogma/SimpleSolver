@@ -10,23 +10,30 @@ const int COEFF_LENGTH = 1;
 const double EPSILON = 1e-7;
 
 
-int read_coefficients(double *coefficients);
+struct coefficients_t
+{
+    double a, b, c;
+};
+
+
+int read_double(double *result, const char *text);
+int read_coefficients(struct coefficients_t *coefficients);
 
 /*  
     functions return count of writed roots, and
     will return -1 if there is infinite number of solutions.
 */
-int solve_square_equation(const double *coeff, double *roots);
-int solve_linear_equation(const double *coeff, double *roots);
+int solve_square_equation(const struct coefficients_t *coeff, double *roots);
+int solve_linear_equation(const struct coefficients_t *coeff, double *roots);
 
 
 int main(void)
 {
     int result_code = -1;
-    double coeff[COEFF_LENGTH] = {};
+    struct coefficients_t coeff = {};
     double roots[EQUATION_POWER] = {};
 
-    result_code = read_coefficients(coeff);
+    result_code = read_coefficients(&coeff);
     if (result_code != 0)
     {
         fprintf(stderr, "read_coefficients failed with code %d.\n", result_code);
@@ -35,7 +42,7 @@ int main(void)
 
 
 
-    result_code = solve_square_equation(coeff, roots);
+    result_code = solve_square_equation(&coeff, roots);
     
     if (result_code == -1)
     {
@@ -53,43 +60,50 @@ int main(void)
 }
 
 
-int read_coefficients(double *coefficients)
+int read_double(double *result, const char *text)
 {
     int ch;
-    int id = 0;
-    
-    while (id < COEFF_LENGTH)
+    *result = 0.0;
+    while (1)
     {
-        coefficients[id] = 0.0;
-        while (1)
+        fprintf(stderr, text);
+        if (scanf("%lg", result) == 1)
         {
-            fprintf(stderr, "Enter coefficient at x^%d >", id);
-            if (scanf("%lg", coefficients + id) == 1)
-            {
-                break;
-            }
-            do { ch = getchar(); } 
-            while (ch != EOF && ch != '\n');
+            break;
         }
-        id++;
+        do { ch = getchar(); } 
+        while (ch != EOF && ch != '\n');
     }
+    return 0;
+}
+
+
+
+int read_coefficients(struct coefficients_t *coeff)
+{
+    int res = 0;
+
+    res = read_double(&coeff->c, "Enter coefficient at x^0 [c] > ");
+    if (res != 0) { return 1; }
+    
+    res = read_double(&coeff->b, "Enter coefficient at x^1 [b] > ");
+    if (res != 0) { return 1; }
+    
+    res = read_double(&coeff->a, "Enter coefficient at x^2 [a] > ");
+    if (res != 0) { return 1; }
 
     return 0;
 }
 
 
-int solve_square_equation(const double *coeff, double *roots)
+int solve_square_equation(const struct coefficients_t *coeff, double *roots)
 {
-    double a = coeff[2];
-    double b = coeff[1];
-    double c = coeff[0];
-    
-    if (fabs(a) < EPSILON)
+    if (fabs(coeff->a) < EPSILON)
     {
         return solve_linear_equation(coeff, roots);
     }
 
-    double d = b * b - 4.0 * c * a;
+    double d = coeff->b * coeff->b - 4.0 * coeff->a * coeff->c;
 
     if (d < -EPSILON)
     {
@@ -98,29 +112,26 @@ int solve_square_equation(const double *coeff, double *roots)
 
     if (d < EPSILON)
     {
-        roots[0] = -b * 0.5 / a;
+        roots[0] = -coeff->b * 0.5 / coeff->a;
         return 1;
     }
 
     double sqrt_d = sqrt(d);
 
-    roots[0] = (-b - sqrt_d) * 0.5 / a;
-    roots[1] = (-b + sqrt_d) * 0.5 / a;
+    roots[0] = (-coeff->b - sqrt_d) * 0.5 / coeff->a;
+    roots[1] = (-coeff->b + sqrt_d) * 0.5 / coeff->a;
 
     return 2;
 }
 
-int solve_linear_equation(const double *coeff, double *roots)
-{
-    double a = coeff[2];
-    double b = coeff[1];
-        
-    if (fabs(a) < EPSILON)
+int solve_linear_equation(const struct coefficients_t *coeff, double *roots)
+{        
+    if (fabs(coeff->b) < EPSILON)
     {
-        return (fabs(b) < EPSILON ? -1 : 0);
+        return (fabs(coeff->c) < EPSILON ? -1 : 0);
     }
 
-    roots[0] = -b / a;
+    roots[0] = -coeff->c / coeff->b;
     
     return 1;
 }
