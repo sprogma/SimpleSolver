@@ -104,41 +104,71 @@ int read_coefficients_offsets(struct coefficients_t *coefficients);
 
 /*  
     functions return count of writed roots, and
-    will return -1 if there is infinite number of solutions.
+    will return result_infinite_solutions if there is infinite number of solutions.
 */
 int solve_square_equation(const struct coefficients_t *coeff, double *roots);
 int solve_linear_equation(const struct coefficients_t *coeff, double *roots);
+const int result_infinite_solutions = -1;
+
+int print_result(double *roots, int result_code);
 
 
 int main(void)
 {
-    int result_code = -1;
+    int return_code = -1;
     struct coefficients_t coeff = {};
     double roots[EQUATION_POWER] = {};
 
-    result_code = read_coefficients_struct(&coeff);
-    if (result_code != 0)
+    return_code = read_coefficients_struct(&coeff);
+    if (return_code != 0)
     {
-        fprintf(stderr, "read_coefficients failed with code %d.\n", result_code);
+        fprintf(stderr, "read_coefficients failed with code %d.\n", return_code);
         return 1;
     }
 
 
 
-    result_code = solve_square_equation(&coeff, roots);
+    int result_code = solve_square_equation(&coeff, roots);
     
-    if (result_code == -1)
+    if (result_code == result_infinite_solutions)
     {
         fprintf(stderr, "This equation has an infinite number of solutions.\n");
         printf("inf\n");
     }
+
+    return_code = print_result(roots, result_code);
     
-    fprintf(stderr, "Found %d roots%c\n", result_code, (result_code ? ':' : '.'));
-    for (int i = 0; i < result_code; ++i)
+    return 0;
+}
+
+
+
+
+int print_result(double *roots, int result_code)
+{
+    switch (result_code)
     {
-        printf("%g\n", roots[i]);
-    }    
-    
+        case 0:
+            fprintf(stderr, "There is no solutions.\n");
+            break;
+        case 1:
+            fprintf(stderr, "the only solution is:\n");
+            fprintf(stdout, "%g\n", roots[0]);
+            break;
+        case 2:
+            fprintf(stderr, "the solutions is both\n");
+            fprintf(stdout, "%g\n", roots[0]);
+            fprintf(stderr, "and\n");
+            fprintf(stdout, "%g\n", roots[1]);
+            break;
+        case result_infinite_solutions:
+            fprintf(stderr, "any number is solution.\n");
+            fprintf(stdout, "inf\n");
+            break;
+        default:
+            fprintf(stderr, "Wrong result code.\n");
+            return 1;
+    }
     return 0;
 }
 
@@ -292,7 +322,7 @@ int solve_linear_equation(const struct coefficients_t *coeff, double *roots)
 {        
     if (fabs(coeff->b) < EPSILON)
     {
-        return (fabs(coeff->c) < EPSILON ? -1 : 0);
+        return (fabs(coeff->c) < EPSILON ? result_infinite_solutions : 0);
     }
 
     roots[0] = -coeff->c / coeff->b;
