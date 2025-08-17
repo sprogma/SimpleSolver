@@ -104,11 +104,11 @@ int read_coefficients_offsets(struct coefficients_t *coefficients);
 
 /*  
     functions return count of writed roots, and
-    will return result_infinite_solutions if there is infinite number of solutions.
+    will return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions.
 */
 int solve_square_equation(const struct coefficients_t *coeff, double *roots);
 int solve_linear_equation(const struct coefficients_t *coeff, double *roots);
-const int result_infinite_solutions = -1;
+const int RESULT_INFINITE_SOLUTIONS = -1;
 
 int print_result(double *roots, int result_code);
 
@@ -130,7 +130,7 @@ int main(void)
 
     int result_code = solve_square_equation(&coeff, roots);
     
-    if (result_code == result_infinite_solutions)
+    if (result_code == RESULT_INFINITE_SOLUTIONS)
     {
         fprintf(stderr, "This equation has an infinite number of solutions.\n");
         printf("inf\n");
@@ -161,7 +161,7 @@ int print_result(double *roots, int result_code)
             fprintf(stderr, "and\n");
             fprintf(stdout, "%g\n", roots[1]);
             break;
-        case result_infinite_solutions:
+        case RESULT_INFINITE_SOLUTIONS:
             fprintf(stderr, "any number is solution.\n");
             fprintf(stdout, "inf\n");
             break;
@@ -322,7 +322,7 @@ int solve_linear_equation(const struct coefficients_t *coeff, double *roots)
 {        
     if (fabs(coeff->b) < EPSILON)
     {
-        return (fabs(coeff->c) < EPSILON ? result_infinite_solutions : 0);
+        return (fabs(coeff->c) < EPSILON ? RESULT_INFINITE_SOLUTIONS : 0);
     }
 
     roots[0] = -coeff->c / coeff->b;
