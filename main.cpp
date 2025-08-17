@@ -25,8 +25,6 @@ int main(void)
     int result_code;
     double coeff[COEFF_LENGTH];
     double roots[EQUATION_POWER];
-    
-    /* parse cmdline args */
 
     result_code = read_coefficients(coeff);
     if (result_code != 0)
@@ -84,7 +82,6 @@ int solve_square_equation(double *coeff, double *roots)
 {
     if (fabs(coeff[2]) < EPSILON)
     {
-        /* linear equation */
         return solve_linear_equation(coeff, roots);
     }
 
