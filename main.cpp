@@ -5,9 +5,9 @@
 #include "math.h"
 
 
-#define EQUATION_POWER (2)
-#define COEFF_LENGTH ((EQUATION_POWER) + 1)
-#define EPSILON (0.0000001)
+const int EQUATION_POWER = 2;
+const int COEFF_LENGTH = 1;
+const double EPSILON = 1e-7;
 
 
 int read_coefficients(double *coefficients);
@@ -22,9 +22,9 @@ int solve_linear_equation(double *coeff, double *roots);
 
 int main(void)
 {
-    int result_code;
-    double coeff[COEFF_LENGTH];
-    double roots[EQUATION_POWER];
+    int result_code = -1;
+    double coeff[COEFF_LENGTH] = {};
+    double roots[EQUATION_POWER] = {};
 
     result_code = read_coefficients(coeff);
     if (result_code != 0)
