@@ -106,9 +106,15 @@ int read_coefficients_offsets(struct coefficients_t *coefficients);
     functions return count of writed roots, and
     will return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions.
 */
-int solve_square_equation(const struct coefficients_t *coeff, double *roots);
-int solve_linear_equation(const struct coefficients_t *coeff, double *roots);
-const int RESULT_INFINITE_SOLUTIONS = -1;
+enum solution_result_codes
+{
+    RESULT_INFINITE_SOLUTIONS = -1,
+    RESULT_0_SOLUTIONS = 0,
+    RESULT_1_SOLUTIONS = 1,
+    RESULT_2_SOLUTIONS = 2,
+};
+enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots);
+enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots);
 
 int print_result(double *roots, int result_code);
 
@@ -148,14 +154,14 @@ int print_result(double *roots, int result_code)
 {
     switch (result_code)
     {
-        case 0:
+        case RESULT_0_SOLUTIONS:
             fprintf(stderr, "There is no solutions.\n");
             break;
-        case 1:
+        case RESULT_1_SOLUTIONS:
             fprintf(stderr, "the only solution is:\n");
             fprintf(stdout, "%g\n", roots[0]);
             break;
-        case 2:
+        case RESULT_2_SOLUTIONS:
             fprintf(stderr, "the solutions is both\n");
             fprintf(stdout, "%g\n", roots[0]);
             fprintf(stderr, "and\n");
@@ -290,7 +296,7 @@ int read_coefficients_offsets(struct coefficients_t *coeff)
 
 /* solvers */
 
-int solve_square_equation(const struct coefficients_t *coeff, double *roots)
+enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots)
 {
     if (fabs(coeff->a) < EPSILON)
     {
@@ -301,13 +307,13 @@ int solve_square_equation(const struct coefficients_t *coeff, double *roots)
 
     if (d < -EPSILON)
     {
-        return 0;
+        return RESULT_0_SOLUTIONS;
     }
 
     if (d < EPSILON)
     {
         roots[0] = -coeff->b * 0.5 / coeff->a;
-        return 1;
+        return RESULT_1_SOLUTIONS;
     }
 
     double sqrt_d = sqrt(d);
@@ -315,17 +321,17 @@ int solve_square_equation(const struct coefficients_t *coeff, double *roots)
     roots[0] = (-coeff->b - sqrt_d) * 0.5 / coeff->a;
     roots[1] = (-coeff->b + sqrt_d) * 0.5 / coeff->a;
 
-    return 2;
+    return RESULT_2_SOLUTIONS;
 }
 
-int solve_linear_equation(const struct coefficients_t *coeff, double *roots)
+enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots)
 {        
     if (fabs(coeff->b) < EPSILON)
     {
-        return (fabs(coeff->c) < EPSILON ? RESULT_INFINITE_SOLUTIONS : 0);
+        return (fabs(coeff->c) < EPSILON ? RESULT_INFINITE_SOLUTIONS : RESULT_0_SOLUTIONS);
     }
 
     roots[0] = -coeff->c / coeff->b;
     
-    return 1;
+    return RESULT_1_SOLUTIONS;
 }
