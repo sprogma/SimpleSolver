@@ -5,3 +5,6 @@
 *.d
 *.so
 *.xml
+*.gcov
+*.gcna
+*.gcno

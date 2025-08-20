@@ -3,15 +3,18 @@
 #include "read_double.h"
 
 
+#include "errno.h"
+#include "ctype.h"
 #include "stdio.h"
+#include "stdlib.h"
 #include "stdarg.h"
+
 
 
 
 
 int read_double(double *result, const char *fmt, ...)
 {
-    int ch, scan_result;
     *result = 0.0;
     while (1)
     {
@@ -22,21 +25,41 @@ int read_double(double *result, const char *fmt, ...)
             vfprintf(stderr, fmt, args);
             va_end(args);
         }
-        scan_result = scanf("%lg", result);
-        if (scan_result == 1)
+        
+        char buffer[128] = {}, *end = NULL;
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL)
         {
-            break;
+            if (feof(stdin))
+            {
+                return READ_COEFFICIENTS_EOF;
+            }
+            return READ_COEFFICIENTS_FGETS_ERROR;
         }
-        if (scan_result == EOF)
+
+        *result = strtod(buffer, &end);
+        if (buffer == end)
         {
-            return READ_COEFFICIENTS_EOF;
+            fprintf(stderr, "Error.\n");
+            continue;
         }
-        do { ch = getchar(); } 
-        while (ch != EOF && ch != '\n');
-        if (ch == EOF)
+        if (errno == ERANGE)
+        {        
+            fprintf(stderr, "Overflow/Underflow.\n");
+            continue;
+        }
+        while (isspace(*end)) { end++; }
+        if (*end == 0)
         {
-            return READ_COEFFICIENTS_EOF;
+            if (*(end - 1) == '\n')
+            {   
+                break;
+            }
+            fprintf(stderr, "Too long string. Length must be less than %ld.\n", (long)(sizeof(buffer) - 2));
+            /* skip all text up to \n */
+            while (getchar() != '\n') { }
+            continue;
         }
+        fprintf(stderr, "Trash in the end of line.\n");
     }
     return 0;
 }

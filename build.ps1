@@ -1,5 +1,7 @@
 param(
     [string]$DestinationName = "$PSScriptRoot/a.exe",
+    [string[]]$AddCompilerArguments,
+    [string[]]$AddLinkerArguments,
     [switch]$Rebuild,
     [switch]$Clean
 )
@@ -59,10 +61,10 @@ $CompilerArguments = @(
     ,"-Werror=vla"
     ,"-D_DEBUG"
     ,"-D_EJUDGE_CLIENT_SIDE"
-)
+) + $AddCompilerArguments
 
 $LinkerArguments = @(
-)
+) + $AddLinkerArguments
 
 
 
@@ -83,7 +85,7 @@ $TimeUpdates = gci *.cpp | % FullName | % {
     {
         Write-Host "Compile $_" -Foreground green
 
-        & $CC -c @CompilerArguments $_ -o $obj
+        & $CC -c $CompilerArguments $_ -o $obj
         
         @{file=$_;date=((Get-Date) + [timespan]::new(0, 0, 3))}
     }
@@ -100,7 +102,7 @@ $TimeUpdates | % {
 if ($TimeUpdates -or !$ApplicationExists)
 {
     Write-Host "Linking" -Foreground green
-    & $CC @LinkerArguments (gci *.cpp | % {$_.FullName -replace ".cpp$", ".o"}) -o $DestinationName
+    & $CC (gci *.cpp | % {$_.FullName -replace ".cpp$", ".o"}) -o $DestinationName $LinkerArguments
 }
 else
 {
