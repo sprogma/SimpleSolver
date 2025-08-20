@@ -6,6 +6,8 @@ CFLAGS += -Wall -Wpedantic
 SOURCES := $(wildcard *.cpp)
 OBJS := $(SOURCES:.cpp=.o)
 DEPS := $(SOURCES:.cpp=.d)
+TEST_OBJS := $(filter-out main%, $(SOURCES:.cpp=.test.o))
+TEST_DEPS := $(filter-out main%, $(SOURCES:.cpp=.test.d))
 
 ifeq ($(OS),Windows_NT)
   CFLAGS += -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code \
@@ -30,7 +32,18 @@ endif
 
 all : a
 
+test : atest
+	./atest
+	gcov *.o tests/*.o
+
+tests/test.d : tests/test.cpp
+	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
+
+tests/test.o : tests/test.cpp tests/test.d
+	$(CC) $(CFLAGS) --coverage -c $< -o $@
+
 -include $(DEPS)
+-include $(TEST_DEPS)
 
 a : $(OBJS)
 	$(LD) $^ $(LDFLAGS) -o $@
@@ -39,7 +52,17 @@ a : $(OBJS)
 	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
 
 %.o : %.cpp %.d
-	$(CC) -c $< $(CFLAGS) -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
+
+atest : $(TEST_OBJS) tests/test.o
+	$(LD) $^ $(LDFLAGS) -o $@ -lgcov
+
+%.test.d: %.cpp
+	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
+
+%.test.o : %.cpp %.test.d
+	$(CC) $(CFLAGS) --coverage -c $< -o $@
+	
 clean:
-	rm -f *.o *.d a
+	rm -f **/*.o **/*.d a atest **/*.gcda **/*.gcno **/*.gcov
