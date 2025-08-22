@@ -16,25 +16,9 @@ struct commandline_parser_entry_t
     const char *info;
     int key_length;
     const char **key;
-};
-
-struct commandline_argument_value_t
-{
-    int value_length;
-    int value_alloc;
-    const char **value;
-};
-
-struct commandline_argument_t
-{
-    struct commandline_parser_entry_t base;
-    struct commandline_argument_value_t value;
-};
-
-struct commandline_flag_t
-{
-    struct commandline_parser_entry_t base;
-    uint64_t flag;
+    void *value;
+    void *(*read_function)(void *value, int *curr, int argc, const char **argv);
+    uint32_t set;
 };
 
 struct commandline_parser_t
@@ -44,13 +28,10 @@ struct commandline_parser_t
     const char *usage;
 
     /* arguments */
-    uint64_t flags;
     
-    int flags_layout_length;
-    int arguments_length;
+    int entries_length;
     
-    struct commandline_flag_t *flags_layout;
-    struct commandline_argument_t *arguments;
+    struct commandline_parser_entry_t *entries;
 };
 
 
@@ -70,10 +51,8 @@ struct commandline_parser_t
  * @return 0 if there was no errors.
  */
 int initializate_commandline_args(struct commandline_parser_t *parser, 
-                                  struct commandline_flag_t *flags_layout, 
-                                  int flags_layout_length,
-                                  struct commandline_argument_t *arguments,
-                                  int arguments_length);
+                                  struct commandline_parser_entry_t *entries, 
+                                  int entries_length);
 
 
 /**
@@ -92,22 +71,10 @@ int commandline_args_parse(struct commandline_parser_t *parser, int argc, const 
  *
  * @param[in] args - structure where to find
  * @param[in] key to find
- * @param[out] place to write found value.
+ * @param[out] place to write found pointer from read_function.
  *
  * @return 1 if key was specified, or 0 if there is no such key.
  */
-int commandline_args_get_value(struct commandline_parser_t *parser, const char *key, struct commandline_argument_value_t *value);
-
-
-/**
- * @brief This function gets flag by key
- *
- * @param[in] args - structure where to find
- * @param[in] key to find
- *
- * @return flag, or 0 if there wasn't such flag.
- */
-uint64_t commandline_args_get_flag(struct commandline_parser_t *parser, const char *key);
-
+int commandline_args_get_value(struct commandline_parser_t *parser, const char *key, void **value);
 
 #endif
