@@ -15,8 +15,6 @@ void generate_reflection_structure(struct coefficients_t *coeff, struct coeffici
 int read_coefficients_struct(struct coefficients_t *coeff)
 {
     assert(coeff != NULL);
-    
-    int res = 0;
 
 
     struct coefficients_t_reflection_table_t reflection_data[sizeof(*coeff) / sizeof(double)] = {};
@@ -25,10 +23,10 @@ int read_coefficients_struct(struct coefficients_t *coeff)
 
     for (int i = 0; i < (int)arraylength(reflection_data); ++i)
     {
-        res = read_double(reflection_data[i].ptr, 
-                          "Enter coefficient at x^%d [%s] > ", 
-                          reflection_data[i].power,
-                          reflection_data[i].name);
+        int res = read_double(reflection_data[i].ptr, 
+                              "Enter coefficient at x^%d [%s] > ", 
+                              reflection_data[i].power,
+                              reflection_data[i].name);
         if (res == READ_COEFFICIENTS_EOF) { return READ_COEFFICIENTS_EOF; }
         if (res != 0) { return 1; }
     }
