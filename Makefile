@@ -3,6 +3,8 @@ LD = g++
 
 CFLAGS += -Wall -Wpedantic -Iinclude
 
+GCOVFLAGS += -b -j
+
 SOURCES := $(wildcard src/*.cpp)
 OBJS := $(SOURCES:.cpp=.o)
 DEPS := $(SOURCES:.cpp=.d)
@@ -36,7 +38,7 @@ all : a
 
 test : atest
 	./atest
-	gcov $(TEST_OBJS)
+	gcov $(GCOVFLAGS) $(TEST_OBJS)
 
 tests/test.d : tests/test.cpp
 	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
