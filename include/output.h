@@ -6,9 +6,15 @@
 #include "solver.h"
 
 
-/*
-    print roots of equation using arguments (as their names)
-*/
+
+/**
+ * @brief print solvation of equation.
+ *
+ * @param[in] roots to print (get them from solve* function)
+ * @param[in] result_code from one of solve* functions.
+ *
+ * @return 0 on success.
+ */
 int print_result(const double* roots, enum solution_result_codes result_code);
 
 

@@ -20,11 +20,24 @@ enum solution_result_codes
 };
 
 
-/*  
-    functions return count of writed roots, and
-    will return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions.
-*/
+
+/**
+ * @brief function to solve linear equation
+ *
+ * @param[in] coefficients to solve
+ * @param[out] roots to save solvation
+ *
+ * @return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions - or other enum member.
+ */
 enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots);
+/**
+ * @brief function to solve linear equation
+ *
+ * @param[in] coefficients to solve
+ * @param[out] roots to save solvation
+ *
+ * @return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions - or other enum member.
+ */
 enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots);
 
 

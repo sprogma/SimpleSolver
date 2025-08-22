@@ -16,12 +16,13 @@ union coefficients_converter_t
 
 
 
-/*
-    read user input using read_double into coefficients_t stucture;
-
-    return READ_COEFFICIENTS_EOF if find EOF while reading
-    return 0 if there is no errors
-*/
+/**
+ * @brief read user input using read_double into coefficients_t stucture;
+ *
+ * @param[out] coeffitients to fill
+ *
+ * @return 0 if there was no errors.
+ */
 int read_coefficients_union(struct coefficients_t *coefficients);
 
 

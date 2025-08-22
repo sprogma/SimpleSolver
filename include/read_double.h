@@ -9,15 +9,17 @@ const int READ_COEFFICIENTS_EOF = -1;
 const int READ_COEFFICIENTS_FGETS_ERROR = 1;
 
 
-/*
-    read double value from stdin.
-    validates input, also read entire line
-
-    not validates input on nan/inf/denormalized
-
-    return READ_COEFFICIENTS_EOF if read EOF,
-    return 0 if there is no errors
-*/
+/**
+ * @brief read double value from stdin.
+ *        validates input, also read entire line
+ *        not validates input on nan/inf/denormalized
+ *
+ * @param[out] double to read
+ * @param[in] fmt - prompt format string.
+ * @param[in] ... prompt arguments
+ *
+ * @return READ_COEFFICIENTS_EOF if read EOF, else - 0 if there was no errors.
+ */
 int read_double(double *result, const char *fmt, ...);
 
 #endif
