@@ -3,7 +3,7 @@ LD = g++
 
 CFLAGS += -Wall -Wpedantic -Iinclude
 
-GCOVFLAGS += -b -j
+GCOVFLAGS += -a -b -j
 
 SOURCES := $(wildcard src/*.cpp)
 OBJS := $(SOURCES:.cpp=.o)
