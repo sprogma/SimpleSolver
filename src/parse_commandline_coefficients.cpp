@@ -10,11 +10,9 @@
 
 
 
-int parse_commandline_coefficients(int argc, const char **argv, int *curr_ptr, struct coefficients_t *coeffs)
+int parse_commandline_coefficients(int argc, const char **argv, struct coefficients_t *coeffs)
 {
-    int curr = *curr_ptr;
-
-    curr++;
+    int curr = 0;
     double value = 0.0;
     size_t id = 0;
     while (curr < argc)
@@ -58,9 +56,6 @@ int parse_commandline_coefficients(int argc, const char **argv, int *curr_ptr, s
         id++;
         curr++;
     }
-    /* set pointer on last read argument */
-    --curr;
-
-    *curr_ptr = curr;
+    
     return 0;
 }

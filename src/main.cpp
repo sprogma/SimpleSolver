@@ -1,9 +1,9 @@
 #include "common.h"
 #include "solver.h"
 #include "interactive.h"
-#include "help.h"
 #include "solve_commandline_args.h"
 #include "parse_commandline_coefficients.h"
+#include "cmdarg_parser.h"
 
 #include "string.h"
 #include "errno.h"
@@ -25,46 +25,41 @@ int main(int argc, const char **argv)
 
 int parse_arguments(int argc, const char **argv)
 {
-    uint32_t coefficients_set = 0;
-    struct coefficients_t coeffs = {};
-    
-    for (int curr = 1; curr < argc; ++curr)
-    {
-        if (!strcmp(argv[curr], "--"))
+    const char *coeff_names[] = {
+        "--coeff",
+        "-c",
+    };
+    struct commandline_argument_t args[] = {
         {
-            break;
-        }
-        else if (!strcmp(argv[curr], "--help") || !strcmp(argv[curr], "-h"))
-        {
-            return print_help();
-        }
-        else if (!strcmp(argv[curr], "--coeff") || !strcmp(argv[curr], "-c"))
-        {
-            if (coefficients_set)
-            {
-                fprintf(stderr, "Given two \"coeff\" arguments at the same time.\n");
-            }
-            
-            int res = parse_commandline_coefficients(argc, argv, &curr, &coeffs);
+            .info = "coefficients to solve",
+            .key_length = arraylength(coeff_names),
+            .key = coeff_names,
+            .value = {},
+        },
+    };
+    struct commandline_parser_t parser = {};
+    int init_cmdarg_result = initializate_commandline_args(&parser, 
+                                                           NULL, 0, 
+                                                           args, arraylength(args));
 
-            if (res != 0)
-            {
-                fprintf(stderr, "Error while parse commandline coefficients.\n");
-                return res;
-            }
+    commandline_args_parse(&parser, argc - 1, argv + 1);
 
-            coefficients_set = -1;
-        }
-        else
-        {
-            fprintf(stderr, "Unknown command line flag: %s\n", argv[curr]);
-        }
-    }
+
+    /* is threre --coeff argument? */
+    struct commandline_argument_value_t coeff_arg;
+    int coeff_set = commandline_args_get_value(&parser, "--coeff", &coeff_arg);
 
     /* call solvers */
 
-    if (coefficients_set)
+    if (coeff_set)
     {
+        struct coefficients_t coeffs = {};
+        int res = parse_commandline_coefficients(coeff_arg.value_length, coeff_arg.value, &coeffs);
+        if (res != 0)
+        {
+            fprintf(stderr, "Error while parse commandline coefficients.\n");
+            return res;
+        }
         return solve_command_line_coefficients(&coeffs);
     }
     else
