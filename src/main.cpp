@@ -52,6 +52,7 @@ int parse_arguments(int argc, const char **argv)
                 fprintf(stderr, "Error while parse commandline coefficients.\n");
                 return res;
             }
+
             coefficients_set = -1;
         }
         else
