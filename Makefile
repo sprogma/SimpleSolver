@@ -7,7 +7,9 @@ SOURCES := $(wildcard src/*.cpp)
 OBJS := $(SOURCES:.cpp=.o)
 DEPS := $(SOURCES:.cpp=.d)
 TEST_OBJS := $(filter-out %main.test.o, $(SOURCES:.cpp=.test.o))
+TEST_OBJS += tests/test.o
 TEST_DEPS := $(filter-out %main.test.d, $(SOURCES:.cpp=.test.d))
+TEST_DEPS += tests/test.d
 
 ifeq ($(OS),Windows_NT)
   CFLAGS += -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code \
@@ -55,7 +57,7 @@ a : $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
-atest : $(TEST_OBJS) tests/test.o
+atest : $(TEST_OBJS)
 	$(LD) $^ $(LDFLAGS) -o $@ -lgcov
 
 %.test.d: %.cpp
