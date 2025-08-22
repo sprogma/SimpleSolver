@@ -1,12 +1,12 @@
 #include "common.h"
-#include "color.h"
+#include "is_a_tty.h"
 
 
 #ifdef _WIN32
 
     #include "io.h"
 
-    int is_out_terminal()
+    int is_output_terminal()
     {
         return _isatty(1);
     }
@@ -18,7 +18,7 @@
 #else
     #include "unistd.h"
 
-    int is_out_terminal()
+    int is_output_terminal()
     {
         return isatty(1);
     }

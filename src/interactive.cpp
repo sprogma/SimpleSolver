@@ -1,0 +1,52 @@
+#include "common.h"
+#include "solver.h"
+#include "output.h"
+#include "color.h"
+#include "read_double.h"
+#include "is_a_tty.h"
+
+#include "prompt1.h"
+#include "prompt2.h"
+#include "prompt3.h"
+#include "prompt4.h"
+
+
+#include "string.h"
+#include "stdlib.h"
+#include "stdio.h"
+
+
+int run_interactive(void)
+{    
+
+    do
+    {
+        int return_code = -1;
+        struct coefficients_t coeff = {};
+        double roots[EQUATION_POWER] = {};
+
+        return_code = read_coefficients_union(&coeff);
+        if (return_code == READ_COEFFICIENTS_EOF)
+        {
+            return 0;
+        }
+        if (return_code != 0)
+        {
+            fprintf(stderr, "read_coefficients failed with code %d.\n", return_code);
+            return 1;
+        }
+
+
+        enum solution_result_codes result_code = solve_square_equation(&coeff, roots);
+
+        return_code = print_result(roots, result_code);
+        if (return_code != 0)
+        {
+            fprintf(stderr, "Error in printing answer.\n");
+            return 1;
+        }
+    }
+    while (1);
+    
+    return 0;
+}

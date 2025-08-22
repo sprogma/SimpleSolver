@@ -1,0 +1,27 @@
+HELP FILE on sqrt solver
+
+usage
+
+a [--coeff/-c coefficients]
+
+variant 1.
+    short variant for "--coeff" is "-c"
+    a --coeff A B C     solves A*x^2 + B*x + C = 0
+    a --coeff A B       solves A*x + B = 0
+    a --coeff A         solves A = 0
+
+variant 2.
+    a
+
+    runs interactive loop:
+
+    it prompts for arguments in order   "C B A"
+       (from A*x^2 + B*x + C = 0)
+
+    and prints solution.
+
+    if input of program is redirected, then there is no
+    prompt messages.
+
+    if output of program is redirected, then there is no
+    color and output messages.

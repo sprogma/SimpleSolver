@@ -1,5 +1,6 @@
 #include "common.h"
 #include "color.h"
+#include "is_a_tty.h"
 #include "read_double.h"
 
 
