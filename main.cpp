@@ -36,12 +36,6 @@ int main(void)
 
 
         enum solution_result_codes result_code = solve_square_equation(&coeff, roots);
-        
-        if (result_code == RESULT_INFINITE_SOLUTIONS)
-        {
-            fprintf(stderr, "This equation has an infinite number of solutions.\n");
-            printf("inf\n");
-        }
 
         return_code = print_result(roots, result_code);
     }
