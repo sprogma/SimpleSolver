@@ -32,10 +32,19 @@ int parse_arguments(int argc, char **argv)
         {
             break;
         }
+        // else if (!strcmp(argv[curr], "--test"))
+        // {
+        //     return run_tests();
+        // }
         else if (!strcmp(argv[curr], "--help") || !strcmp(argv[curr], "-h"))
         {
             char buff[16] = {};
             FILE *file = fopen("help.txt", "r");
+            if (file == NULL)
+            {
+                fprintf(stderr, "No help file detected.\n");
+                return 1;
+            }
             while (!feof(file))
             {
                 size_t count = fread(buff, 1, sizeof(buff), file);
