@@ -3,6 +3,7 @@
 
 
 #include "stddef.h"
+#include "assert.h"
 
 
 const int EQUATION_POWER = 2;

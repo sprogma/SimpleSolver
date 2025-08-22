@@ -14,6 +14,8 @@ void generate_reflection_structure(struct coefficients_t *coeff, struct coeffici
 
 int read_coefficients_struct(struct coefficients_t *coeff)
 {
+    assert(coeff != NULL);
+    
     int res = 0;
 
 

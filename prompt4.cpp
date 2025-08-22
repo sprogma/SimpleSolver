@@ -6,6 +6,8 @@
 
 int read_coefficients_offsets(struct coefficients_t *coeff)
 {
+    assert(coeff != NULL);
+    
     int res = 0;
 
 

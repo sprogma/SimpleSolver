@@ -20,6 +20,8 @@
 
 int read_coefficients_copy(struct coefficients_t *coeff)
 {
+    assert(coeff != NULL);
+    
     int res = 0;
 
     const char * const format_string = "Enter coefficient at x^%d [%s] > ";

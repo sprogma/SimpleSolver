@@ -5,6 +5,8 @@
 
 int read_coefficients_union(struct coefficients_t *coeff)
 {
+    assert(coeff != NULL);
+    
     int res;
     union coefficients_converter_t *converter = (union coefficients_converter_t *)coeff;
 

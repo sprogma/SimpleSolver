@@ -15,6 +15,8 @@
 
 int read_double(double *result, const char *fmt, ...)
 {
+    assert(result != NULL);
+    
     *result = 0.0;
     while (1)
     {

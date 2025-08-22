@@ -7,6 +7,9 @@
 
 enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots)
 {
+    assert(coeff != NULL);
+    assert(roots != NULL);
+    
     if (f_compare_eq(coeff->a, 0.0))
     {
         return solve_linear_equation(coeff, roots);
@@ -36,6 +39,9 @@ enum solution_result_codes solve_square_equation(const struct coefficients_t *co
 
 enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots)
 {        
+    assert(coeff != NULL);
+    assert(roots != NULL);
+    
     if (f_compare_eq(coeff->b, 0.0))
     {
         return (f_compare_eq(coeff->c, 0.0) ? RESULT_INFINITE_SOLUTIONS : RESULT_0_SOLUTIONS);
