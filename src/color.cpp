@@ -11,7 +11,7 @@
         return _isatty(1);
     }
 
-    int is_in_terminal()
+    int is_input_terminal()
     {
         return _isatty(0);
     }
@@ -23,7 +23,7 @@
         return isatty(1);
     }
 
-    int is_in_terminal()
+    int is_input_terminal()
     {
         return isatty(0);
     }

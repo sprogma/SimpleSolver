@@ -11,7 +11,7 @@
     returns boolean - is output / input stream a terminal
 */
 int is_out_terminal();
-int is_in_terminal();
+int is_input_terminal();
 
 
 #endif

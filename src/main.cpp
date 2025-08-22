@@ -39,6 +39,6 @@ int main(void)
 
         return_code = print_result(roots, result_code);
     }
-    while (is_in_terminal());
+    while (is_input_terminal());
     return 0;
 }

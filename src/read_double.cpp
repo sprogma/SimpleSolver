@@ -20,7 +20,7 @@ int read_double(double *result, const char *fmt, ...)
     *result = 0.0;
     while (1)
     {
-        if (is_in_terminal())
+        if (is_input_terminal())
         {        
             va_list args;
             va_start(args, fmt);
