@@ -48,6 +48,7 @@ int read_double(double *result, const char *fmt, ...)
         if (errno == ERANGE)
         {        
             fprintf(stderr, "Overflow/Underflow.\n");
+            errno = 0;
             continue;
         }
         while (isspace(*end)) { end++; }

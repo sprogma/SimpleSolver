@@ -27,6 +27,7 @@ int parse_commandline_coefficients(int argc, const char **argv, int *curr_ptr, s
         if (errno == ERANGE)
         {        
             fprintf(stderr, "Overflow/Underflow in command line arguments.\n");
+            errno = 0;
             return 1;
         }
 
