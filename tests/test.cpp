@@ -41,7 +41,7 @@ void test_square_solver()
         double real_roots[2] = {};
 
         /* read from file */
-        int int_result;
+        int int_result = 0;
         int scanned = fscanf(file, "%lg;%lg;%lg;%d;%lg;%lg", &coeff.a, &coeff.b, &coeff.c, 
                                                                &int_result, 
                                                                roots + 0, roots + 1);
@@ -99,7 +99,7 @@ void test_linear_solver()
         double real_root = 0.0;
 
         /* read from file */
-        int int_result;
+        int int_result = 0;
         int scanned = fscanf(file, "%lg;%lg;%d;%lg\n", &coeff.b, &coeff.c, 
                                                        &int_result, 
                                                        roots + 0);

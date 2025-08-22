@@ -19,7 +19,7 @@ int parse_commandline_coefficients(int argc, const char **argv, int *curr_ptr, s
     size_t id = 0;
     while (curr < argc)
     {
-        char *end_ptr;
+        char *end_ptr = NULL;
         value = strtod(argv[curr], &end_ptr);
         
         while (isspace(*end_ptr)) { end_ptr++; }
