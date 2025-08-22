@@ -1,8 +1,8 @@
 #include "stdio.h"
 #include "assert.h"
-#include "../solver.h"
-#include "../float_compare.h"
-#include "../common.h"
+#include "solver.h"
+#include "float_compare.h"
+#include "common.h"
 
 
 void test_square_solver();

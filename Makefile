@@ -1,13 +1,13 @@
 CC = g++
 LD = g++
 
-CFLAGS += -Wall -Wpedantic
+CFLAGS += -Wall -Wpedantic -Iinclude
 
-SOURCES := $(wildcard *.cpp)
+SOURCES := $(wildcard src/*.cpp)
 OBJS := $(SOURCES:.cpp=.o)
 DEPS := $(SOURCES:.cpp=.d)
-TEST_OBJS := $(filter-out main%, $(SOURCES:.cpp=.test.o))
-TEST_DEPS := $(filter-out main%, $(SOURCES:.cpp=.test.d))
+TEST_OBJS := $(filter-out %main.test.o, $(SOURCES:.cpp=.test.o))
+TEST_DEPS := $(filter-out %main.test.d, $(SOURCES:.cpp=.test.d))
 
 ifeq ($(OS),Windows_NT)
   CFLAGS += -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code \
@@ -34,7 +34,7 @@ all : a
 
 test : atest
 	./atest
-	gcov *.o tests/*.o
+	gcov $(TEST_OBJS)
 
 tests/test.d : tests/test.cpp
 	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
