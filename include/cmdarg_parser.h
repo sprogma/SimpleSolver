@@ -4,6 +4,20 @@
 #include "stdio.h"
 #include "inttypes.h"
 
+enum commandline_parser_entry_type_t
+{
+    COMMANDLINE_PARSER_FLAG,
+    COMMANDLINE_PARSER_ARGUMENT,
+};
+
+struct commandline_parser_entry_t
+{
+    enum commandline_parser_entry_type_t type;
+    const char *info;
+    int key_length;
+    const char **key;
+};
+
 struct commandline_argument_value_t
 {
     int value_length;
@@ -11,23 +25,17 @@ struct commandline_argument_value_t
     const char **value;
 };
 
-
 struct commandline_argument_t
 {
-    const char *info;
-    const int key_length;
-    const char **key;
+    struct commandline_parser_entry_t base;
     struct commandline_argument_value_t value;
 };
 
 struct commandline_flag_t
 {
-    const char *info;
-    const int key_length;
-    const char **key;
+    struct commandline_parser_entry_t base;
     uint64_t flag;
 };
-
 
 struct commandline_parser_t
 {

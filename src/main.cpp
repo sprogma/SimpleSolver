@@ -25,22 +25,45 @@ int main(int argc, const char **argv)
 
 int parse_arguments(int argc, const char **argv)
 {
+    const char *test_flag_names[] = {
+        "--test-flag",
+        "-t",
+    };
     const char *coeff_names[] = {
         "--coeff",
         "-c",
     };
+    struct commandline_flag_t flags[] = {
+        {
+            {
+                .type = COMMANDLINE_PARSER_FLAG,
+                .info = "test flag",
+                .key_length = arraylength(test_flag_names),
+                .key = test_flag_names,
+            },
+            .flag = 1,
+        },
+    };
     struct commandline_argument_t args[] = {
         {
-            .info = "coefficients to solve",
-            .key_length = arraylength(coeff_names),
-            .key = coeff_names,
+            {
+                .type = COMMANDLINE_PARSER_ARGUMENT,
+                .info = "coefficients to solve",
+                .key_length = arraylength(coeff_names),
+                .key = coeff_names,
+            },
             .value = {},
         },
     };
     struct commandline_parser_t parser = {};
     int init_cmdarg_result = initializate_commandline_args(&parser, 
-                                                           NULL, 0, 
+                                                           flags, arraylength(flags), 
                                                            args, arraylength(args));
+
+    if (init_cmdarg_result != 0)
+    {
+        return 1;
+    }
 
     commandline_args_parse(&parser, argc - 1, argv + 1);
 

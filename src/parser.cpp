@@ -37,22 +37,41 @@ int initializate_commandline_args(struct commandline_parser_t *parser,
 }
 
 
+static struct commandline_parser_entry_t *commandline_args_get_entry_obj(struct commandline_parser_t *parser, const char *key, 
+                                                                         struct commandline_parser_entry_t *entries, 
+                                                                         size_t offset, int entries_length)
+{
+    assert(parser != NULL);
+    assert(entries != NULL);
+    assert(key != NULL);
+    
+    for (int i = 0; i < entries_length; ++i)
+    {
+        for (int name_id = 0; name_id < entries->key_length; ++name_id)
+        {
+            if (!strcmp(entries->key[name_id], key))
+            {
+                return entries;
+            }
+        }
+        
+        /* move to next array value */
+        entries = (struct commandline_parser_entry_t *)(((char *)entries) + offset);
+    }
+    return NULL;
+}
+
+
 static struct commandline_argument_t *commandline_args_get_argument_obj(struct commandline_parser_t *parser, const char *key)
 {
     assert(parser != NULL);
     assert(key != NULL);
 
-    for (int i = 0; i < parser->arguments_length; ++i)
-    {
-        for (int name_id = 0; name_id < parser->arguments[i].key_length; ++name_id)
-        {
-            if (!strcmp(parser->arguments[i].key[name_id], key))
-            {
-                return parser->arguments + i;
-            }
-        }
-    }
-    return NULL;
+    return (struct commandline_argument_t *)
+           commandline_args_get_entry_obj(parser, key, 
+                                          (struct commandline_parser_entry_t *)parser->arguments, 
+                                          sizeof(*parser->arguments), 
+                                          parser->arguments_length);
 }
 
 
@@ -60,18 +79,12 @@ static struct commandline_flag_t *commandline_args_get_flag_obj(struct commandli
 {
     assert(parser != NULL);
     assert(key != NULL);
-    
-    for (int i = 0; i < parser->flags_layout_length; ++i)
-    {
-        for (int name_id = 0; name_id < parser->flags_layout[i].key_length; ++name_id)
-        {
-            if (!strcmp(parser->flags_layout[i].key[name_id], key))
-            {
-                return parser->flags_layout + i;
-            }
-        }
-    }
-    return NULL;
+
+    return (struct commandline_flag_t *)
+           commandline_args_get_entry_obj(parser, key, 
+                                          (struct commandline_parser_entry_t *)parser->flags_layout, 
+                                          sizeof(*parser->flags_layout), 
+                                          parser->flags_layout_length);
 }
 
 
@@ -100,34 +113,47 @@ static int commandline_args_increase_value(struct commandline_argument_t *argume
 }
 
 
+static void print_help_arg_printer(struct commandline_parser_t *parser, struct commandline_parser_entry_t *entries, size_t offset, int entries_length)
+{
+    for (int i = 0; i < entries_length; ++i)
+    {
+        switch (entries->type)
+        {
+            case COMMANDLINE_PARSER_FLAG:
+                printf("Flag");
+                break;
+            case COMMANDLINE_PARSER_ARGUMENT:
+                printf("Argument");
+                break;
+            default:
+                printf("Unknown type");
+                break;
+        }
+        for (int name_id = 0; name_id < entries->key_length; ++name_id)
+        {
+            printf(" %s", entries->key[name_id]);
+        }
+        printf(":\n");
+        printf("    info: %s\n", entries->info);
+        
+        /* move to next array value */
+        entries = (struct commandline_parser_entry_t *)(((char *)entries) + offset);
+    }
+}
+
+
 static void print_help(struct commandline_parser_t *parser)
 {
     assert(parser != NULL);
 
     printf("Help on %s\n", parser->title);
     printf("Usage:\n%s\n", parser->usage);
+
+    print_help_arg_printer(parser, (struct commandline_parser_entry_t *)parser->arguments, 
+                                   sizeof(*parser->arguments), parser->arguments_length);
+    print_help_arg_printer(parser, (struct commandline_parser_entry_t *)parser->flags_layout, 
+                                   sizeof(*parser->flags_layout), parser->flags_layout_length);
     
-    for (int i = 0; i < parser->flags_layout_length; ++i)
-    {
-        printf("Flag");
-        for (int name_id = 0; name_id < parser->flags_layout[i].key_length; ++name_id)
-        {
-            printf(" %s", parser->flags_layout[i].key[name_id]);
-        }
-        printf(":\n");
-        printf("    info: %s\n", parser->flags_layout[i].info);
-    }
-    
-    for (int i = 0; i < parser->arguments_length; ++i)
-    {
-        printf("Argument");
-        for (int name_id = 0; name_id < parser->arguments[i].key_length; ++name_id)
-        {
-            printf(" %s", parser->arguments[i].key[name_id]);
-        }
-        printf(":\n");
-        printf("    info: %s\n", parser->arguments[i].info);
-    }
     exit(0);
 }
 
