@@ -45,10 +45,10 @@ int print_result_text(const double *roots, enum solution_result_codes result_cod
         case RESULT_0_SOLUTIONS:
             break;
         case RESULT_1_SOLUTIONS:
-            printf("%g\n", roots[0]);
+            printf("%.20g\n", roots[0]);
             break;
         case RESULT_2_SOLUTIONS:
-            printf("%g\n%g\n", roots[0], roots[1]);
+            printf("%.20g\n%.20g\n", roots[0], roots[1]);
             break;
         case RESULT_INFINITE_SOLUTIONS:
             printf("inf");
