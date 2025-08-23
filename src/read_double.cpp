@@ -60,7 +60,7 @@ int read_double(double *result, const char *fmt, ...)
             }
             fprintf(stderr, "Too long string. Length must be less than %ld.\n", (long)(sizeof(buffer) - 2));
             /* skip all text up to \n */
-            while (getchar() != '\n') { }
+            while (getchar() != '\n' && !feof(stdin) && !ferror(stdin)) { }
             continue;
         }
         fprintf(stderr, "Trash in the end of line.\n");

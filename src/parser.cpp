@@ -36,7 +36,7 @@ static struct commandline_parser_entry_t *commandline_args_get_entry_obj(struct 
     {
         for (int name_id = 0; name_id < parser->entries[i].key_length; ++name_id)
         {
-            if (!strcmp(parser->entries[i].key[name_id], key))
+            if (strcmp(parser->entries[i].key[name_id], key) == 0)
             {
                 return parser->entries + i;
             }
@@ -86,12 +86,12 @@ int commandline_args_parse(struct commandline_parser_t *parser, int argc, const 
 
     for (int curr = 0; curr < argc; ++curr)
     {
-        if (!strcmp(argv[curr], "--"))
+        if (strcmp(argv[curr], "--") == 0)
         {
             break;
         }
         
-        if (!strcmp(argv[curr], "--help"))
+        if (strcmp(argv[curr], "--help") == 0)
         {
             print_help(parser);
         }

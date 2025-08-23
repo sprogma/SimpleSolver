@@ -21,7 +21,6 @@ int main(int argc, const char **argv)
 }
 
 
-
 void *read_coefficients(void *args, int *global_curr, int argc, const char **argv)
 {
     if (args != NULL)

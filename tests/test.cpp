@@ -5,8 +5,8 @@
 #include "common.h"
 
 
-void test_square_solver();
-void test_linear_solver();
+int test_square_solver();
+int test_linear_solver();
 
 
 int main(int argc, char **argv)
@@ -14,26 +14,38 @@ int main(int argc, char **argv)
     (void)argc;
     (void)argv;
 
-    test_square_solver();
+    int error = 0;
     
-    test_linear_solver();
+    error |= test_square_solver();
+    
+    error |= test_linear_solver();
 
-    printf("Test end.\n");
+    if (error)
+    {
+        printf("Some tests was failed.\n");
+    }
+    else
+    {
+        printf("Test end.\n");
+    }
     
-    return 0;
+    return error;
 }
 
 
-void test_square_solver()
+int test_square_solver()
 {
+    int error = 0;
     FILE *file = fopen("tests/tests/square_solver.txt", "r");
     if (file == NULL)
     {
         fprintf(stderr, "file not found.\n");
         exit(1);
     }
+    int test_id = 0;
     while (1)
     {
+        test_id++;
         struct coefficients_t coeff = {};
         enum solution_result_codes result = RESULT_0_SOLUTIONS;
         double roots[2] = {};
@@ -61,16 +73,29 @@ void test_square_solver()
         
         real_result = solve_square_equation(&coeff, real_roots);
 
-        assert(real_result == result);
+        if (real_result != result)
+        {
+            printf("ERROR: result != real_result : at test square %d.\n", test_id);
+            error = 1;
+            continue;
+        }
         
         switch (result)
         {
             case RESULT_1_SOLUTIONS:
-                assert(f_compare_eq(real_roots[0], roots[0]));
+                if (!f_compare_eq(real_roots[0], roots[0]))
+                {
+                    printf("ERROR: root is wrong : at test square %d.\n", test_id);
+                    error = 1;
+                }
                 break;
             case RESULT_2_SOLUTIONS:
-                    assert((f_compare_eq(real_roots[0], roots[0]) && f_compare_eq(real_roots[1], roots[1])) || 
-                           (f_compare_eq(real_roots[0], roots[1]) && f_compare_eq(real_roots[1], roots[0])));
+                if (!((f_compare_eq(real_roots[0], roots[0]) && f_compare_eq(real_roots[1], roots[1])) || 
+                           (f_compare_eq(real_roots[0], roots[1]) && f_compare_eq(real_roots[1], roots[0]))))
+               {            
+                    printf("ERROR: roots is wrong : at test square %d.\n", test_id);
+                    error = 1;
+               }
                 break;
             case RESULT_0_SOLUTIONS:
             case RESULT_INFINITE_SOLUTIONS:
@@ -79,19 +104,24 @@ void test_square_solver()
         }
     }
     fclose(file);
+
+    return error;
 }
 
 
-void test_linear_solver()
+int test_linear_solver()
 {
+    int error = 0;
     FILE *file = fopen("tests/tests/linear_solver.txt", "r");
     if (file == NULL)
     {
         fprintf(stderr, "file not found.\n");
         exit(1);
     }
+    int test_id = 0;
     while (1)
     {
+        test_id++;
         struct coefficients_t coeff = {};
         enum solution_result_codes result = RESULT_0_SOLUTIONS;
         double roots[2] = {};
@@ -118,12 +148,22 @@ void test_linear_solver()
         
         real_result = solve_linear_equation(&coeff, &real_root);
 
+        if (real_result != result)
+        {
+            printf("ERROR: result != real_result : at test linear %d.\n", test_id);
+            error = 1;
+            continue;
+        }
         assert(real_result == result);
         
         switch (result)
         {
             case RESULT_1_SOLUTIONS:
-                assert(f_compare_eq(real_root, roots[0]));
+                if (!f_compare_eq(real_root, roots[0]))
+                {
+                    printf("ERROR: root is wrong : at test linear %d.\n", test_id);
+                    error = 1;
+                }
                 break;
             case RESULT_2_SOLUTIONS:
             case RESULT_0_SOLUTIONS:
@@ -133,4 +173,5 @@ void test_linear_solver()
         }
     }
     fclose(file);
+    return error;
 }
