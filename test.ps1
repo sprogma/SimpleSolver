@@ -1,9 +1,9 @@
 
 # total limit is multiplication of this two.
-$minLimit = -1e5
-$maxLimit = 1e5
-$minMlLimit = -1e5
-$maxMlLimit = 1e5
+$minLimit = -11111.1
+$maxLimit = 11111.1
+$minMlLimit = -11111.1
+$maxMlLimit = 11111.1
 
 $N = 1000
 
@@ -17,18 +17,25 @@ $N = 1000
     "$c`n$b`n$a" | ./a.exe >variable:res
     $rr1, $rr2 = -split $res
 
-    if ($r1 -gt $r2)
-    {
-        $r1, $r2 = $r2, $r1
-    }
-
     $d1 = ([decimal]$rr1) - $r1
     $d2 = ([decimal]$rr2) - $r2
+    
+    $dd1 = ([decimal]$rr1) - $r2
+    $dd2 = ([decimal]$rr2) - $r1
+    
+    if ([Math]::abs($d1) -gt [Math]::abs($dd1))
+    {
+        $d1 = $dd1
+    }
+    if ([Math]::abs($d2) -gt [Math]::abs($dd2))
+    {
+        $d2 = $dd2
+    }
 
     Write-Host "Diffs: $d1 $d2"
     
-    $d1
-    $d2
+    [Math]::abs($d1)
+    [Math]::abs($d2)
 
     Write-Progress -Activity "Calculations" -PercentComplete ([int]($_ / $N * 100.0))
     
