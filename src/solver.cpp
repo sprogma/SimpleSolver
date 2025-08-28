@@ -1,4 +1,3 @@
-
 #include "common.h"
 #include "solver.h"
 #include "float_compare.h"

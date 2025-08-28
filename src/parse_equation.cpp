@@ -15,6 +15,7 @@ int coeff_sub(struct coefficients_t *x, const struct coefficients_t *y);
 int coeff_mul(struct coefficients_t *x, const struct coefficients_t *y);
 int coeff_div(struct coefficients_t *x, const struct coefficients_t *y);
 
+
 int evaluate_node(struct node_t *node, struct coefficients_t *coefficients);
 int parse_equation(const char *equation, struct coefficients_t *coefficients);
 

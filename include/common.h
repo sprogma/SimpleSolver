@@ -3,7 +3,9 @@
 
 
 #include "stddef.h"
-#include "assert.h"
+#include "stdio.h"
+#define ALWAYS_USE_BEST_ASSERT
+#include "best_assert.h"
 
 
 const int EQUATION_POWER = 2;

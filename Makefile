@@ -5,7 +5,7 @@ CFLAGS += -Wall -Wpedantic -Iinclude
 
 GCOVFLAGS += -a -b -j
 
-LDDLL += libparse.dll
+LDDLL += libparse.dll bestassert.dll
 
 SOURCES := $(wildcard src/*.cpp)
 OBJS := $(SOURCES:.cpp=.o)
