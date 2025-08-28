@@ -8,10 +8,14 @@ extern "C"
 {
 #endif
 
-#ifdef PARSE_DLL_BUILD
-    #define EXPORT __declspec(dllexport)
+#ifndef NO_PARSE_DLL_LIB
+    #ifdef PARSE_DLL_BUILD
+        #define EXPORT __declspec(dllexport)
+    #else
+        #define EXPORT __declspec(dllimport)
+    #endif
 #else
-    #define EXPORT __declspec(dllimport)
+    #define EXPORT
 #endif
     
 

@@ -27,7 +27,7 @@ int initializate_commandline_args(struct commandline_parser_t *parser,
 }
 
 
-static struct commandline_parser_entry_t *commandline_args_get_entry_obj(struct commandline_parser_t *parser, const char *key)
+static struct commandline_parser_entry_t *commandline_args_get_entry_obj(const struct commandline_parser_t *parser, const char *key)
 {
     assert(parser != NULL);
     assert(key != NULL);
@@ -46,7 +46,7 @@ static struct commandline_parser_entry_t *commandline_args_get_entry_obj(struct 
 }
 
 
-static void print_help(struct commandline_parser_t *parser)
+static void print_help(const struct commandline_parser_t *parser)
 {
     assert(parser != NULL);
     
@@ -79,7 +79,7 @@ static void print_help(struct commandline_parser_t *parser)
 }
 
 
-int commandline_args_parse(struct commandline_parser_t *parser, int argc, const char **argv)
+int commandline_args_parse(const struct commandline_parser_t *parser, int argc, const char **argv)
 {
     assert(parser != NULL);
     assert(argv != NULL);
@@ -119,12 +119,12 @@ int commandline_args_parse(struct commandline_parser_t *parser, int argc, const 
     return 0;
 }
 
-int commandline_args_get_value(struct commandline_parser_t *parser, const char *key, void **value)
+int commandline_args_get_value(const struct commandline_parser_t *parser, const char *key, void **value)
 {
     assert(parser != NULL);
     assert(key != NULL);
 
-    struct commandline_parser_entry_t *entry = commandline_args_get_entry_obj(parser, key);
+    const struct commandline_parser_entry_t *entry = commandline_args_get_entry_obj(parser, key);
     
     if (entry == NULL)
     {

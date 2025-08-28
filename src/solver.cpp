@@ -1,3 +1,4 @@
+
 #include "common.h"
 #include "solver.h"
 #include "float_compare.h"
@@ -9,6 +10,13 @@ enum solution_result_codes solve_square_equation(const struct coefficients_t *co
 {
     assert(coeff != NULL);
     assert(roots != NULL);
+
+    if (isnan(coeff->a) || 
+        isnan(coeff->b) || 
+        isnan(coeff->c))
+    {
+        return RESULT_ERROR_EQUATION;
+    }
     
     if (f_compare_eq(coeff->a, 0.0))
     {
@@ -41,6 +49,13 @@ enum solution_result_codes solve_linear_equation(const struct coefficients_t *co
 {        
     assert(coeff != NULL);
     assert(roots != NULL);
+    
+    if (isnan(coeff->a) || 
+        isnan(coeff->b) || 
+        isnan(coeff->c))
+    {
+        return RESULT_ERROR_EQUATION;
+    }
     
     if (f_compare_eq(coeff->b, 0.0))
     {

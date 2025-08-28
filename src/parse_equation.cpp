@@ -10,16 +10,16 @@
             do { int err = (call); if (err) { return err; } } while (0)
 
 
-int coeff_add(struct coefficients_t *x, struct coefficients_t *y);
-int coeff_sub(struct coefficients_t *x, struct coefficients_t *y);
-int coeff_mul(struct coefficients_t *x, struct coefficients_t *y);
-int coeff_div(struct coefficients_t *x, struct coefficients_t *y);
+int coeff_add(struct coefficients_t *x, const struct coefficients_t *y);
+int coeff_sub(struct coefficients_t *x, const struct coefficients_t *y);
+int coeff_mul(struct coefficients_t *x, const struct coefficients_t *y);
+int coeff_div(struct coefficients_t *x, const struct coefficients_t *y);
 
 int evaluate_node(struct node_t *node, struct coefficients_t *coefficients);
 int parse_equation(const char *equation, struct coefficients_t *coefficients);
 
 
-int coeff_add(struct coefficients_t *x, struct coefficients_t *y)
+int coeff_add(struct coefficients_t *x, const struct coefficients_t *y)
 {
     assert(x != NULL);
     assert(y != NULL);
@@ -29,7 +29,7 @@ int coeff_add(struct coefficients_t *x, struct coefficients_t *y)
     return 0;
 }
 
-int coeff_sub(struct coefficients_t *x, struct coefficients_t *y)
+int coeff_sub(struct coefficients_t *x, const struct coefficients_t *y)
 {
     assert(x != NULL);
     assert(y != NULL);
@@ -39,7 +39,7 @@ int coeff_sub(struct coefficients_t *x, struct coefficients_t *y)
     return 0;
 }
 
-int coeff_mul(struct coefficients_t *x, struct coefficients_t *y)
+int coeff_mul(struct coefficients_t *x, const struct coefficients_t *y)
 {
     assert(x != NULL);
     assert(y != NULL);
@@ -48,7 +48,7 @@ int coeff_mul(struct coefficients_t *x, struct coefficients_t *y)
         !f_compare_eq(x->a * y->b, 0.0) ||
         !f_compare_eq(x->b * y->a, 0.0))
     {
-        fprintf(stderr, "Polinomial multiplication overflow. (appears x^3 or x^4)\n");
+        fprintf(stderr, "Polinomial multiplication overflow. (may be appears x^3 or x^4)\n");
         return 1;
     }
     double a = x->a * y->c + x->b * y->b + x->c * y->a;
@@ -60,7 +60,7 @@ int coeff_mul(struct coefficients_t *x, struct coefficients_t *y)
     return 0;
 }
 
-int coeff_div(struct coefficients_t *x, struct coefficients_t *y)
+int coeff_div(struct coefficients_t *x, const struct coefficients_t *y)
 {
     assert(x != NULL);
     assert(y != NULL);

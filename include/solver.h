@@ -13,6 +13,7 @@ struct coefficients_t
 
 enum solution_result_codes
 {
+    RESULT_ERROR_EQUATION = -2,
     RESULT_INFINITE_SOLUTIONS = -1,
     RESULT_0_SOLUTIONS = 0,
     RESULT_1_SOLUTIONS = 1,
@@ -27,7 +28,8 @@ enum solution_result_codes
  * @param[in] coefficients to solve
  * @param[out] roots to save solvation
  *
- * @return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions - or other enum member.
+ * @return RESULT_ERROR_EQUATION if given error equation, 
+ *         RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions - or other enum member.
  */
 enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots);
 /**
@@ -36,7 +38,8 @@ enum solution_result_codes solve_square_equation(const struct coefficients_t *co
  * @param[in] coefficients to solve
  * @param[out] roots to save solvation
  *
- * @return RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions - or other enum member.
+ * @return RESULT_ERROR_EQUATION if there is error in equation RESULT_INFINITE_SOLUTIONS 
+ *         if there is infinite number of solutions - or other enum member.
  */
 enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots);
 

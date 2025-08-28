@@ -6,6 +6,6 @@
 
 int print_equation(const struct coefficients_t *coeffs)
 {
-    printf("Solving equation %lf*x^2 + %lf*x + %lf\n", coeffs->a, coeffs->b, coeffs->c);
+    printf("Solving equation %lg*x^2 + %lg*x + %lg\n", coeffs->a, coeffs->b, coeffs->c);
     return 0;
 }

@@ -43,12 +43,11 @@ void *read_coefficients(void *args, int *global_curr, int argc, const char **arg
     struct coefficients_t *coeffs = (struct coefficients_t *)calloc(sizeof(*coeffs), 1);
 
     int curr = *global_curr;
-    double value = 0.0;
     size_t id = 0;
     while (curr < argc)
     {
         char *end_ptr = NULL;
-        value = strtod(argv[curr], &end_ptr);
+        double value = strtod(argv[curr], &end_ptr);
         
         while (isspace(*end_ptr)) { end_ptr++; }
 
@@ -116,7 +115,7 @@ int parse_arguments(int argc, const char **argv)
         },
         {
             .type = COMMANDLINE_PARSER_ARGUMENT,
-            .info = "coefficients to solve",
+            .info = "if set, parsing input as expression and evaluates it.",
             .key_length = arraylength(math_flag_names),
             .key = math_flag_names,
             .value = NULL,

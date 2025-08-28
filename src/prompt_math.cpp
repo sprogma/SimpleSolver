@@ -4,6 +4,7 @@
 #include "is_a_tty.h"
 #include "solver.h"
 #include "stdio.h"
+#include "string.h"
 
 
 int read_coefficient_math_format(struct coefficients_t *coeff)
@@ -14,8 +15,8 @@ int read_coefficient_math_format(struct coefficients_t *coeff)
         {
             fprintf(stderr, "Enter equation in math form\n");
         }
-        char s[1024];
-        char *result = fgets(s, sizeof(s), stdin);
+        char s[1024] = {};
+        const char *result = fgets(s, sizeof(s), stdin);
         if (result == NULL)
         {
             if (feof(stdin))
@@ -26,12 +27,16 @@ int read_coefficient_math_format(struct coefficients_t *coeff)
             return 1;
         }
 
-        int parse_code = parse_equation(s, coeff);
-        if (parse_code == 0)
+
+        if (*s != '\n')
         {
-            break;
+            int parse_code = parse_equation(s, coeff);
+            if (parse_code == 0)
+            {
+                break;
+            }
+            fprintf(stderr, "Error in input.\n");
         }
-        fprintf(stderr, "Error in input.\n");
     }
 
     return 0;

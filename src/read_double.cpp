@@ -23,7 +23,7 @@ int read_double(double *result, const char *fmt, ...)
     {
         if (is_input_terminal())
         {        
-            va_list args = NULL;
+            va_list args; /* no initialization becouse may be it is bad to use va_list before va_start */
             va_start(args, fmt);
             vfprintf(stderr, fmt, args);
             va_end(args);

@@ -29,6 +29,9 @@ int print_result_color(const double *roots, enum solution_result_codes result_co
         case RESULT_INFINITE_SOLUTIONS:
             printf(COLOR_YELLOW("Any number is solution")"\n");
             break;
+        case RESULT_ERROR_EQUATION:
+            printf(COLOR_RED("There is error in equation, probably nan.")"\n");
+            break;
         default:
             printf(COLOR_RED("Wrong result code.")"\n");
             return 1;
@@ -52,6 +55,9 @@ int print_result_text(const double *roots, enum solution_result_codes result_cod
             break;
         case RESULT_INFINITE_SOLUTIONS:
             printf("inf");
+            break;
+        case RESULT_ERROR_EQUATION:
+            printf(COLOR_RED("There is error in equation, probably nan.")"\n");
             break;
         default:
             return 1;
