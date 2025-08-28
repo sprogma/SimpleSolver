@@ -5,6 +5,8 @@ CFLAGS += -Wall -Wpedantic -Iinclude
 
 GCOVFLAGS += -a -b -j
 
+LDDLL += libparse.dll
+
 SOURCES := $(wildcard src/*.cpp)
 OBJS := $(SOURCES:.cpp=.o)
 DEPS := $(SOURCES:.cpp=.d)
@@ -50,7 +52,7 @@ tests/test.o : tests/test.cpp tests/test.d
 -include $(TEST_DEPS)
 
 a : $(OBJS)
-	$(LD) $^ $(LDFLAGS) -o $@
+	$(LD) $^ $(LDDLL) $(LDFLAGS) -o $@
 
 %.d: %.cpp
 	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
@@ -60,7 +62,7 @@ a : $(OBJS)
 
 
 atest : $(TEST_OBJS)
-	$(LD) $^ $(LDFLAGS) -o $@ -lgcov
+	$(LD) $^ $(LDDLL) $(LDFLAGS) -o $@ -lgcov
 
 %.test.d: %.cpp
 	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<

@@ -130,8 +130,11 @@ int commandline_args_get_value(struct commandline_parser_t *parser, const char *
     {
         return 0;
     }
-    
-    *value = entry->value;
+
+    if (value != NULL)
+    {
+        *value = entry->value;
+    }
     
     return entry->set;
 }

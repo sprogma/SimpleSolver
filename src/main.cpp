@@ -13,6 +13,9 @@
 
 
 int parse_arguments(int argc, const char **argv);
+void *read_math_flag(void *args, int *global_curr, int argc, const char **argv);
+void *read_coefficients(void *args, int *global_curr, int argc, const char **argv);
+
 
 
 int main(int argc, const char **argv)
@@ -20,6 +23,15 @@ int main(int argc, const char **argv)
     return parse_arguments(argc, argv);
 }
 
+
+void *read_math_flag(void *args, int *global_curr, int argc, const char **argv)
+{
+    (void)args;
+    (void)global_curr;
+    (void)argc;
+    (void)argv;
+    return NULL;
+}
 
 void *read_coefficients(void *args, int *global_curr, int argc, const char **argv)
 {
@@ -88,6 +100,10 @@ int parse_arguments(int argc, const char **argv)
         "--coeff",
         "-c",
     };
+    const char *math_flag_names[] = {
+        "--math",
+        "-m",
+    };
     struct commandline_parser_entry_t args[] = {
         {
             .type = COMMANDLINE_PARSER_ARGUMENT,
@@ -96,6 +112,15 @@ int parse_arguments(int argc, const char **argv)
             .key = coeff_names,
             .value = NULL,
             .read_function = &read_coefficients,
+            .set = 0,
+        },
+        {
+            .type = COMMANDLINE_PARSER_ARGUMENT,
+            .info = "coefficients to solve",
+            .key_length = arraylength(math_flag_names),
+            .key = math_flag_names,
+            .value = NULL,
+            .read_function = &read_math_flag,
             .set = 0,
         },
     };
@@ -115,6 +140,11 @@ int parse_arguments(int argc, const char **argv)
     struct coefficients_t *coeff_arg;
     int coeff_set = commandline_args_get_value(&parser, "--coeff", (void **)&coeff_arg);
 
+    int math_flag_value = 0;
+    if (commandline_args_get_value(&parser, "--math", (void **)NULL))
+    {
+        math_flag_value = 1;
+    }
 
     /* call solvers */
 
@@ -125,6 +155,6 @@ int parse_arguments(int argc, const char **argv)
     }
     else
     {
-        return run_interactive();
+        return run_interactive(math_flag_value);
     }
 }
