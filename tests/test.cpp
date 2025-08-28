@@ -99,6 +99,7 @@ int test_square_solver()
                 break;
             case RESULT_0_SOLUTIONS:
             case RESULT_INFINITE_SOLUTIONS:
+            case RESULT_ERROR_EQUATION:
             default:
                 break;
         }
@@ -154,6 +155,7 @@ int test_linear_solver()
             error = 1;
             continue;
         }
+        
         assert(real_result == result);
         
         switch (result)
@@ -168,6 +170,7 @@ int test_linear_solver()
             case RESULT_2_SOLUTIONS:
             case RESULT_0_SOLUTIONS:
             case RESULT_INFINITE_SOLUTIONS:
+            case RESULT_ERROR_EQUATION:
             default:
                 break;
         }
