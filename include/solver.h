@@ -8,6 +8,8 @@
 struct coefficients_t
 {
     double c, b, a;
+    // double *coeff;
+    // size_t length;
 };
 
 

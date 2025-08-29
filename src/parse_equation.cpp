@@ -2,82 +2,19 @@
 #include "errno.h"
 #include "string.h"
 #include "solver.h"
+#include "polinomial.h"
 #include "float_compare.h"
 #include "parser_api.h"
+#include "parser_errors.h"
 
 
 #define RETURN_IF_ERR(call) \
             do { int err = (call); if (err) { return err; } } while (0)
 
 
-int coeff_add(struct coefficients_t *x, const struct coefficients_t *y);
-int coeff_sub(struct coefficients_t *x, const struct coefficients_t *y);
-int coeff_mul(struct coefficients_t *x, const struct coefficients_t *y);
-int coeff_div(struct coefficients_t *x, const struct coefficients_t *y);
-
-
 int evaluate_node(struct node_t *node, struct coefficients_t *coefficients);
 int parse_equation(const char *equation, struct coefficients_t *coefficients);
 
-
-int coeff_add(struct coefficients_t *x, const struct coefficients_t *y)
-{
-    assert(x != NULL);
-    assert(y != NULL);
-    x->a += y->a;
-    x->b += y->b;
-    x->c += y->c;
-    return 0;
-}
-
-int coeff_sub(struct coefficients_t *x, const struct coefficients_t *y)
-{
-    assert(x != NULL);
-    assert(y != NULL);
-    x->a -= y->a;
-    x->b -= y->b;
-    x->c -= y->c;
-    return 0;
-}
-
-int coeff_mul(struct coefficients_t *x, const struct coefficients_t *y)
-{
-    assert(x != NULL);
-    assert(y != NULL);
-    
-    if (!f_compare_eq(x->a * y->a, 0.0) || 
-        !f_compare_eq(x->a * y->b, 0.0) ||
-        !f_compare_eq(x->b * y->a, 0.0))
-    {
-        fprintf(stderr, "Polinomial multiplication overflow. (may be appears x^3 or x^4)\n");
-        return 1;
-    }
-    double a = x->a * y->c + x->b * y->b + x->c * y->a;
-    double b = x->b * y->c + x->c * y->b;
-    double c = x->c * y->c;
-    x->a = a;
-    x->b = b;
-    x->c = c;
-    return 0;
-}
-
-int coeff_div(struct coefficients_t *x, const struct coefficients_t *y)
-{
-    assert(x != NULL);
-    assert(y != NULL);
-
-    if (!f_compare_eq(y->a, 0.0) || 
-        !f_compare_eq(y->b, 0.0))
-    {
-        fprintf(stderr, "Division on not scalar equation.\n");
-        return 1;
-    }
-
-    x->a /= y->c;
-    x->b /= y->c;
-    x->c /= y->c;
-    return 0;
-}
 
 
 int evaluate_node(struct node_t *node, struct coefficients_t *coefficients)
@@ -199,11 +136,20 @@ int parse_equation(const char *equation, struct coefficients_t *coefficients)
 {
     assert(equation != NULL);
     assert(coefficients != NULL);
-    struct parse_result_t result = parse_all(equation);
 
-    if (result.rest == NULL)
+    struct parser_error_table_t error;
+    struct parse_result_t result = parse_all(equation, &error);
+
+    if (result.rest == NULL || *result.rest != 0)
     {
         fprintf(stderr, "Parsing error. [Syntax]\n");
+        if (result.rest != NULL && *result.rest)
+        {
+            fprintf(stderr, "Not all code parsed:\n");
+        }
+
+        print_errors(stderr, &result, &error);
+                
         return 1;
     }
 

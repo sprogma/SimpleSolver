@@ -2,6 +2,7 @@
 #define PARSE_MATH
 
 #include "inttypes.h"
+#include "stdlib.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -45,14 +46,36 @@ struct node_t
 };
 
 
+#ifdef SEE_VERBOSE_ERRORS
+struct parser_error_record_t
+{
+    const char *position;
+    char *prediction;
+};
+#endif
+
+
 struct parse_result_t
 {
     const char *rest;
     struct node_t *node;
+    /* used if compilation faled */
+#ifdef SEE_VERBOSE_ERRORS
+    size_t table_length;
+    size_t table_alloc;
+    struct parser_error_record_t *table;
+#endif
 };
 
 
-EXPORT struct parse_result_t parse_all(const char *code);
+struct parser_error_table_t
+{
+    const char *source_code;
+    const char *max_parsed_position;
+    enum node_type_t max_parsed_node_type;
+};
+
+EXPORT struct parse_result_t parse_all(const char *code, struct parser_error_table_t *error_record);
 
 #ifdef __cplusplus
 }

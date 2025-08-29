@@ -1,7 +1,7 @@
 CC = g++
 LD = g++
 
-CFLAGS += -Wall -Wpedantic -Iinclude
+CFLAGS += -Wall -Wpedantic -Iinclude -DSEE_VERBOSE_ERRORS -DUSE_LEVINSTEIN
 
 GCOVFLAGS += -a -b -j
 
