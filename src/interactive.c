@@ -7,10 +7,7 @@
 #include "print_equation.h"
 #include "interactive.h"
 
-#include "prompt1.h"
 #include "prompt2.h"
-#include "prompt3.h"
-#include "prompt4.h"
 #include "prompt_math.h"
 
 
@@ -25,7 +22,7 @@ int run_interactive(int math_input)
     {
         int return_code = -1;
         struct coefficients_t coeff = {};
-        double roots[EQUATION_POWER] = {};
+        double *roots = NULL;
 
         if (math_input)
         {
@@ -42,7 +39,7 @@ int run_interactive(int math_input)
         }
         else
         {
-            return_code = read_coefficients_union(&coeff);
+            return_code = read_coefficients(&coeff);
             if (return_code == READ_COEFFICIENTS_EOF)
             {
                 return 0;
@@ -54,7 +51,8 @@ int run_interactive(int math_input)
             }
         }
 
-
+        coeff_strip(&coeff);
+        
         int print_code = print_equation(&coeff);
         if (print_code != 0)
         {
@@ -62,13 +60,20 @@ int run_interactive(int math_input)
             return 1;
         }
 
-        enum solution_result_codes result_code = solve_square_equation(&coeff, roots);
+        long long result_code = solve_equation(&coeff, &roots);
 
         return_code = print_result(roots, result_code);
         if (return_code != 0)
         {
             fprintf(stderr, "Error in printing answer.\n");
             return 1;
+        }
+
+        free(roots);
+
+        if (math_input)
+        {
+            exit(0);
         }
     }
     while (1);

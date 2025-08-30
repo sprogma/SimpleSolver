@@ -3,47 +3,23 @@
 
 
 #include "common.h"
+#include "polinomial.h"
 
 
-struct coefficients_t
-{
-    double c, b, a;
-    // double *coeff;
-    // size_t length;
-};
-
-
-enum solution_result_codes
-{
-    RESULT_ERROR_EQUATION = -2,
-    RESULT_INFINITE_SOLUTIONS = -1,
-    RESULT_0_SOLUTIONS = 0,
-    RESULT_1_SOLUTIONS = 1,
-    RESULT_2_SOLUTIONS = 2,
-};
-
+#define RESULT_ERROR_EQUATION -2
+#define RESULT_INFINITE_SOLUTIONS -1
 
 
 /**
  * @brief function to solve linear equation
  *
  * @param[in] coefficients to solve
- * @param[out] roots to save solvation
+ * @param[out] returns roots - allocated array with roots
  *
  * @return RESULT_ERROR_EQUATION if given error equation, 
  *         RESULT_INFINITE_SOLUTIONS if there is infinite number of solutions - or other enum member.
  */
-enum solution_result_codes solve_square_equation(const struct coefficients_t *coeff, double *roots);
-/**
- * @brief function to solve linear equation
- *
- * @param[in] coefficients to solve
- * @param[out] roots to save solvation
- *
- * @return RESULT_ERROR_EQUATION if there is error in equation RESULT_INFINITE_SOLUTIONS 
- *         if there is infinite number of solutions - or other enum member.
- */
-enum solution_result_codes solve_linear_equation(const struct coefficients_t *coeff, double *roots);
+long long solve_equation(const struct coefficients_t *coeff, double **roots);;
 
 
 

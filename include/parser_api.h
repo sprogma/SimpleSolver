@@ -9,7 +9,7 @@ extern "C"
 {
 #endif
 
-#ifndef NO_PARSE_DLL_LIB
+#if !defined(NO_PARSE_DLL_LIB) && defined(_WIN32)
     #ifdef PARSE_DLL_BUILD
         #define EXPORT __declspec(dllexport)
     #else

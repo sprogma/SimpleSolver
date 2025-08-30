@@ -11,9 +11,9 @@ int solve_command_line_coefficients(struct coefficients_t *coeff)
     assert(coeff != NULL);
 
     int return_code = -1;
-    double roots[EQUATION_POWER] = {};
+    double *roots = NULL;
 
-    enum solution_result_codes result_code = solve_square_equation(coeff, roots);
+    long long result_code = solve_equation(coeff, &roots);
 
     return_code = print_result(roots, result_code);
     if (return_code != 0)

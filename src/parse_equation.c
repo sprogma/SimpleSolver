@@ -113,12 +113,16 @@ int evaluate_node(struct node_t *node, struct coefficients_t *coefficients)
                     fprintf(stderr, "not allowed: FLOAT identifer is not float, have (%.*s).\n", (int)(node->end - node->start), node->start);
                     return 1;
                 }
-                coefficients->c = value;
+                coeff_alloc(coefficients, 1);
+                coefficients->size = 1;
+                coefficients->data[0] = value;
                 return 0;
             }
         case NODE_TYPE_IDENTIFER:
-            coefficients->b = 1.0;
-            if (strncmp(node->start, "x", node->end - node->start) != 0)
+            coeff_alloc(coefficients, 2);
+            coefficients->size = 2;
+            coefficients->data[1] = 1.0;
+            if (strncmp(node->start, "x", (size_t)(node->end - node->start)) != 0)
             {
                 fprintf(stderr, "not allowed: IDENTIFER not 'x', have (%.*s).\n", (int)(node->end - node->start), node->start);
                 return 1;

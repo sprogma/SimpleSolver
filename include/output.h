@@ -15,7 +15,7 @@
  *
  * @return 0 on success.
  */
-int print_result(const double* roots, enum solution_result_codes result_code);
+int print_result(const double* roots, long long result_code);
 
 
 #endif

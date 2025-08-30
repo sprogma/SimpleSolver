@@ -5,8 +5,8 @@
 #include "common.h"
 
 
-const int READ_COEFFICIENTS_EOF = -1;
-const int READ_COEFFICIENTS_FGETS_ERROR = 1;
+#define READ_COEFFICIENTS_EOF (-1)
+#define READ_COEFFICIENTS_FGETS_ERROR 1
 
 
 /**

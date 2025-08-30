@@ -75,6 +75,6 @@ int commandline_args_parse(const struct commandline_parser_t *parser, int argc, 
  *
  * @return 1 if key was specified, or 0 if there is no such key.
  */
-int commandline_args_get_value(const struct commandline_parser_t *parser, const char *key, void **value);
+uint32_t commandline_args_get_value(const struct commandline_parser_t *parser, const char *key, void **value);
 
 #endif

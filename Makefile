@@ -1,29 +1,29 @@
-CC = g++
-LD = g++
+CC = gcc
+LD = gcc
 
-CFLAGS += -Wall -Wpedantic -Iinclude -DSEE_VERBOSE_ERRORS -DUSE_LEVINSTEIN
+CFLAGS += -Wall -Iinclude -DSEE_VERBOSE_ERRORS -DUSE_LEVINSTEIN
 
 GCOVFLAGS += -a -b -j
 
 LDDLL += libparse.dll bestassert.dll
 
-SOURCES := $(wildcard src/*.cpp)
-OBJS := $(SOURCES:.cpp=.o)
-DEPS := $(SOURCES:.cpp=.d)
-TEST_OBJS := $(filter-out %main.test.o, $(SOURCES:.cpp=.test.o))
+SOURCES := $(wildcard src/*.c)
+OBJS := $(SOURCES:.c=.o)
+DEPS := $(SOURCES:.c=.d)
+TEST_OBJS := $(filter-out %main.test.o, $(SOURCES:.c=.test.o))
 TEST_OBJS += tests/test.o
-TEST_DEPS := $(filter-out %main.test.d, $(SOURCES:.cpp=.test.d))
+TEST_DEPS := $(filter-out %main.test.d, $(SOURCES:.c=.test.d))
 TEST_DEPS += tests/test.d
 
 ifeq ($(OS),Windows_NT)
-  CFLAGS +=  -std=gnu++17 -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code \
-            -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Weffc++ -Wmain -Wextra \
-            -Wall -g -pipe -fexceptions -Wcast-qual -Wconversion -Wctor-dtor-privacy -Wempty-body -Wformat-security \
-            -Wformat=2 -Wignored-qualifiers -Wlogical-op -Wno-missing-field-initializers -Wnon-virtual-dtor \
-            -Woverloaded-virtual -Wpointer-arith -Wsign-promo -Wstack-usage=8192 -Wstrict-aliasing -Wstrict-null-sentinel \
+  CFLAGS += -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-equal -Winline -Wunreachable-code \
+            -Wmissing-declarations -Wmissing-include-dirs -Wswitch-enum -Wswitch-default -Wmain -Wextra \
+            -Wall -g -pipe -fexceptions -Wcast-qual -Wconversion -Wempty-body -Wformat-security \
+            -Wformat=2 -Wignored-qualifiers -Wlogical-op -Wno-missing-field-initializers \
+            -Wpointer-arith -Wstack-usage=8192 -Wstrict-aliasing \
             -Wtype-limits -Wwrite-strings -Werror=vla -D_DEBUG -D_EJUDGE_CLIENT_SIDE
 else
-  CFLAGS += -D _DEBUG -ggdb3 -std=gnu++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations -Wc++14-compat \
+  CFLAGS += -D _DEBUG -ggdb3 -O0 -Wall -Wextra -Weffc++ -Waggressive-loop-optimizations -Wc++14-compat \
             -Wmissing-declarations -Wcast-align -Wcast-qual -Wchar-subscripts -Wconditionally-supported -Wconversion \
             -Wctor-dtor-privacy -Wempty-body -Wfloat-equal -Wformat-nonliteral -Wformat-security -Wformat-signedness \
             -Wformat=2 -Winline -Wlogical-op -Wnon-virtual-dtor -Wopenmp-simd -Woverloaded-virtual -Wpacked -Wpointer-arith \
@@ -42,10 +42,10 @@ test : atest
 	./atest
 	gcov $(GCOVFLAGS) $(TEST_OBJS)
 
-tests/test.d : tests/test.cpp
+tests/test.d : tests/test.c
 	$(CC) $(CFLAGS) -MM -MT "$(@:.d=.o)" -MF $@ $<
 
-tests/test.o : tests/test.cpp tests/test.d
+tests/test.o : tests/test.c tests/test.d
 	$(CC) $(CFLAGS) --coverage -c $< -o $@
 
 -include $(DEPS)

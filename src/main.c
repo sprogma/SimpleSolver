@@ -1,8 +1,8 @@
 #include "common.h"
-#include "solver.h"
 #include "interactive.h"
 #include "solve_commandline_args.h"
 #include "cmdarg_parser.h"
+#include "polinomial.h"
 
 #include "string.h"
 #include "errno.h"
@@ -14,7 +14,7 @@
 
 int parse_arguments(int argc, const char **argv);
 void *read_math_flag(void *args, int *global_curr, int argc, const char **argv);
-void *read_coefficients(void *args, int *global_curr, int argc, const char **argv);
+void *read_cmdarg_coefficients(void *args, int *global_curr, int argc, const char **argv);
 
 
 
@@ -33,7 +33,7 @@ void *read_math_flag(void *args, int *global_curr, int argc, const char **argv)
     return NULL;
 }
 
-void *read_coefficients(void *args, int *global_curr, int argc, const char **argv)
+void *read_cmdarg_coefficients(void *args, int *global_curr, int argc, const char **argv)
 {
     if (args != NULL)
     {
@@ -41,6 +41,9 @@ void *read_coefficients(void *args, int *global_curr, int argc, const char **arg
         return args;
     }
     struct coefficients_t *coeffs = (struct coefficients_t *)calloc(sizeof(*coeffs), 1);
+    coeffs->alloc = 0;
+    coeffs->size = 0;
+    coeffs->data = NULL;
 
     int curr = *global_curr;
     size_t id = 0;
@@ -64,24 +67,12 @@ void *read_coefficients(void *args, int *global_curr, int argc, const char **arg
             break;
         }             
 
-        switch (id)
+        coeff_alloc(coeffs, coeffs->size + 1);
+        for (size_t i = coeffs->size - 1; i < coeffs->size; ++i)
         {
-            case 0:
-               coeffs->c = value;
-               break;
-            case 1:
-               coeffs->b = coeffs->c;
-               coeffs->c = value;
-               break;
-            case 2:
-               coeffs->a = coeffs->b;
-               coeffs->b = coeffs->c;
-               coeffs->c = value;
-               break;
-            default:
-                fprintf(stderr, "Warning: too many coefficients given. skip them.\n");
-                break;
+            coeffs->data[i + 1] = coeffs->data[i];
         }
+        coeffs->data[0] = value;
         
         id++;
         curr++;
@@ -110,7 +101,7 @@ int parse_arguments(int argc, const char **argv)
             .key_length = arraylength(coeff_names),
             .key = coeff_names,
             .value = NULL,
-            .read_function = &read_coefficients,
+            .read_function = &read_cmdarg_coefficients,
             .set = 0,
         },
         {
@@ -137,7 +128,7 @@ int parse_arguments(int argc, const char **argv)
 
     /* is threre --coeff argument? */
     struct coefficients_t *coeff_arg;
-    int coeff_set = commandline_args_get_value(&parser, "--coeff", (void **)&coeff_arg);
+    uint32_t coeff_set = commandline_args_get_value(&parser, "--coeff", (void **)&coeff_arg);
 
     int math_flag_value = 0;
     if (commandline_args_get_value(&parser, "--math", (void **)NULL))

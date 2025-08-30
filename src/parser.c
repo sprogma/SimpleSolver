@@ -119,7 +119,7 @@ int commandline_args_parse(const struct commandline_parser_t *parser, int argc, 
     return 0;
 }
 
-int commandline_args_get_value(const struct commandline_parser_t *parser, const char *key, void **value)
+uint32_t commandline_args_get_value(const struct commandline_parser_t *parser, const char *key, void **value)
 {
     assert(parser != NULL);
     assert(key != NULL);

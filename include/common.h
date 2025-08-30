@@ -8,9 +8,7 @@
 #include "best_assert.h"
 
 
-const int EQUATION_POWER = 2;
-const int COEFF_LENGTH = 1;
-const double EPSILON = 1e-7;
+#define EPSILON 1e-7
 
 
 #define arraylength(x) (sizeof(x)/sizeof(*x))

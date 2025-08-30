@@ -13,11 +13,11 @@ double get_error_record_score(struct parser_error_record_t *record, struct parse
 #ifdef __cplusplus
 extern "C"
 {
-#ifdef __cplusplus
+#endif
 
 EXPORT int print_errors(FILE *file, struct parse_result_t *result, struct parser_error_table_t *error);
 
-#endif
+#ifdef __cplusplus
 }
 #endif
 
