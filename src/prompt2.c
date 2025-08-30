@@ -13,9 +13,11 @@ int read_coefficients(struct coefficients_t *coeff)
     {
         printf("Enter max power: ");
         scanf_ret = scanf("%d", &power);
+        int c;
+        while ((c = getchar()) && c != '\n' && c != EOF) {}
     }
     while (scanf_ret != 1 || power < 1);
-    
+
 
     coeff_alloc(coeff, (size_t)power + 1ull);
 
